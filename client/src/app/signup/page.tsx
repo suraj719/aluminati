@@ -38,17 +38,17 @@ export default function page() {
   };
   return (
     <>
-      <div className="w-full flex h-[91vh]">
-        <div className="relative flex-1 hidden items-center justify-center h-full bg-gray-900 lg:flex">
+      <div className="w-full flex h-[90%]">
+        <div className="relative flex-1 hidden items-center justify-center h-full  lg:flex">
           <div className="relative z-10 w-full max-w-md">
             <div className=" mt-16 space-y-3">
               <h3 className="text-white text-3xl font-bold">
-                Start Connecting and Growing Your Network
+                Start Connecting and Grow Your Network
               </h3>
               <p className="text-gray-300">
-                Create an account with college mail and access all features.
-                Connect with alumni, students, and the college effortlessly, and
-                start building valuable relationships today.
+                Create an account with university provided mail address and
+                access all features. Connect with alumni, students, and the
+                college effortlessly, and start building valuable relationships.
               </p>
               <div className="flex items-center -space-x-2 overflow-hidden">
                 <img
@@ -72,32 +72,24 @@ export default function page() {
                   className="w-10 h-10 rounded-full border-2 border-white"
                 />
                 <p className="text-sm text-gray-400 font-medium translate-x-5">
-                  Join 5.000+ users
+                  5,000+ alumni joined
                 </p>
               </div>
             </div>
           </div>
-          <div
-            className="absolute inset-0 my-auto h-[500px]"
-            style={{
-              background:
-                "linear-gradient(152.92deg, rgba(192, 132, 252, 0.2) 4.54%, rgba(232, 121, 249, 0.26) 34.2%, rgba(192, 132, 252, 0.1) 77.55%)",
-              filter: "blur(118px)",
-            }}
-          ></div>
         </div>
-        <div className="flex-1 flex items-center justify-center h-full">
-          <div className="w-full max-w-md space-y-8 px-4 bg-white text-gray-600 sm:px-0">
+        <div className="flex-1 flex items-center justify-center h-full z-10">
+          <div className="w-full max-w-md space-y-4 px-4 text-gray-300 sm:px-0">
             <div className="">
               <div className="mt-5 space-y-2">
-                <h3 className="text-gray-800 text-2xl font-bold sm:text-3xl">
+                <h3 className="text-white text-2xl font-bold sm:text-3xl">
                   Sign up
                 </h3>
                 <p className="">
                   Already have an account?{" "}
                   <Link
                     href="login"
-                    className="font-medium text-indigo-600 hover:text-indigo-500"
+                    className="font-medium text-indigo-400 hover:text-indigo-300"
                   >
                     Log in
                   </Link>
@@ -105,7 +97,7 @@ export default function page() {
               </div>
             </div>
             <div className="grid grid-cols-3 gap-x-3">
-              <button className="flex items-center justify-center py-2.5 border rounded-lg hover:bg-gray-50 duration-150 active:bg-gray-100">
+              <button className="flex items-center justify-center py-2.5 border rounded-lg bg-gray-50 duration-150 hover:bg-gray-300">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   x="0px"
@@ -116,7 +108,7 @@ export default function page() {
                   <path d="M 11 4 C 7.134 4 4 7.134 4 11 L 4 39 C 4 42.866 7.134 46 11 46 L 39 46 C 42.866 46 46 42.866 46 39 L 46 11 C 46 7.134 42.866 4 39 4 L 11 4 z M 13.085938 13 L 21.023438 13 L 26.660156 21.009766 L 33.5 13 L 36 13 L 27.789062 22.613281 L 37.914062 37 L 29.978516 37 L 23.4375 27.707031 L 15.5 37 L 13 37 L 22.308594 26.103516 L 13.085938 13 z M 16.914062 15 L 31.021484 35 L 34.085938 35 L 19.978516 15 L 16.914062 15 z"></path>
                 </svg>
               </button>
-              <button className="flex items-center justify-center py-2.5 border rounded-lg hover:bg-gray-50 duration-150 active:bg-gray-100">
+              <button className="flex items-center justify-center py-2.5 border rounded-lg bg-gray-50 duration-150 hover:bg-gray-300">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   x="0px"
@@ -143,7 +135,7 @@ export default function page() {
                 </svg>
               </button>
 
-              <button className="flex items-center justify-center py-2.5 border rounded-lg hover:bg-gray-50 duration-150 active:bg-gray-100">
+              <button className="flex items-center justify-center py-2.5 border rounded-lg bg-gray-50 duration-150 hover:bg-gray-300">
                 <svg
                   className="w-5 h-5"
                   viewBox="0 0 48 48"
@@ -194,11 +186,10 @@ export default function page() {
                 </svg>
               </button>
             </div>
-            <div className="relative">
-              <span className="block w-full h-px bg-gray-300"></span>
-              <p className="inline-block w-fit text-sm bg-white px-2 absolute -top-2 inset-x-0 mx-auto">
-                Or continue with
-              </p>
+            <div className="flex items-center gap-1">
+              <hr className="sm:w-[35%] w-[30%]"></hr>
+              <p>Or continue with</p>
+              <hr className="sm:w-[35%] w-[30%]" />
             </div>
             <form onSubmit={AlumniSignup} className="space-y-5">
               <div>
@@ -209,7 +200,7 @@ export default function page() {
                   placeholder="Enter your Full Name"
                   onChange={handleChange}
                   required
-                  className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
+                  className="w-full mt-2 px-3 py-2 text-white bg-transparent outline-none border focus:border-indigo-400 shadow-sm rounded-lg"
                 />
               </div>
               <div>
@@ -220,7 +211,7 @@ export default function page() {
                   placeholder="Enter your college email address"
                   onChange={handleChange}
                   required
-                  className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
+                  className="w-full mt-2 px-3 py-2 text-white bg-transparent outline-none border focus:border-indigo-400 shadow-sm rounded-lg"
                 />
               </div>
               <div>
@@ -231,7 +222,7 @@ export default function page() {
                   placeholder="Enter a strong password"
                   onChange={handleChange}
                   required
-                  className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
+                  className="w-full mt-2 px-3 py-2 text-white bg-transparent outline-none border focus:border-indigo-400 shadow-sm rounded-lg"
                 />
               </div>
               <button
@@ -249,6 +240,14 @@ export default function page() {
           </div>
         </div>
       </div>
+      <div
+        className="absolute inset-0 my-auto h-[500px] w-full -z-1"
+        style={{
+          background:
+            "linear-gradient(152.92deg, rgba(192, 132, 252, 0.2) 4.54%, rgba(232, 121, 249, 0.26) 34.2%, rgba(192, 132, 252, 0.1) 77.55%)",
+          filter: "blur(118px)",
+        }}
+      ></div>
     </>
   );
 }

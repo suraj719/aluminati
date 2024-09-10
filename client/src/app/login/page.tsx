@@ -37,7 +37,7 @@ export default function page() {
   };
   return (
     <>
-      <div className="bg-gray-900 w-full h-[91vh] text-white flex flex-col items-center justify-center px-4">
+      <div className="bg-gray-900 w-full h-[90%] text-white flex flex-col items-center justify-center px-4">
         <div className="max-w-sm w-full  space-y-5">
           <div className="text-center pb-3">
             {/* <p className="font-bold text-2xl">Aluminati</p> */}
@@ -56,7 +56,7 @@ export default function page() {
                 placeholder="Enter your email address"
                 onChange={handleChange}
                 required
-                className="w-full mt-2 px-3 py-2 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
+                className="w-full mt-2 px-3 py-2 bg-transparent outline-none border focus:border-indigo-400 shadow-sm rounded-lg"
               />
             </div>
             <div>
@@ -67,7 +67,7 @@ export default function page() {
                 placeholder="Enter your password"
                 onChange={handleChange}
                 required
-                className="w-full mt-2 px-3 py-2 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
+                className="w-full mt-2 px-3 py-2 bg-transparent outline-none border focus:border-indigo-400 shadow-sm rounded-lg"
               />
             </div>
             <button
@@ -89,7 +89,7 @@ export default function page() {
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <g clip-path="url(#clip0_17_40)">
+              <g clipPath="url(#clip0_17_40)">
                 <path
                   d="M47.532 24.5528C47.532 22.9214 47.3997 21.2811 47.1175 19.6761H24.48V28.9181H37.4434C36.9055 31.8988 35.177 34.5356 32.6461 36.2111V42.2078H40.3801C44.9217 38.0278 47.532 31.8547 47.532 24.5528Z"
                   fill="#4285F4"

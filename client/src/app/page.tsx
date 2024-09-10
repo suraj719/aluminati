@@ -1,7 +1,9 @@
+import Link from "next/link";
+
 export default function Home() {
   return (
     <>
-      <div className="bg-gray-900 h-[91vh] flex items-center justify-center overflow-hidden">
+      <div className="h-[90%] my-14 md:my-0 flex items-center justify-center">
         <section className="mx-auto max-w-screen-xl pb-12 px-4 items-center lg:flex md:px-8">
           <div className="space-y-4 flex-1 sm:text-center lg:text-left">
             <h1 className="text-white font-bold text-4xl xl:text-5xl">
@@ -14,12 +16,12 @@ export default function Home() {
               mentorships, and opportunities within the community.
             </p>
             <div className="pt-10 items-center justify-center space-y-3 sm:space-x-6 sm:space-y-0 sm:flex lg:justify-start">
-              <a
-                href="#"
+              <Link
+                href="/signup"
                 className="px-7 py-3 w-full bg-white text-gray-800 text-center rounded-md shadow-md block sm:w-auto"
               >
                 Get started
-              </a>
+              </Link>
               <a
                 href="#"
                 className="px-7 py-3 w-full bg-gray-700 text-gray-200 text-center rounded-md block sm:w-auto"
