@@ -1,8 +1,9 @@
 "use client";
 import axios from "axios";
+import { getCookie, setCookie } from "cookies-next";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 export default function page() {
@@ -25,8 +26,11 @@ export default function page() {
       );
       setIsLoading(false);
       if (response.data.success) {
+        setCookie("token", response.data.data, { maxAge: 60 * 60 * 24 * 7 });
+        router.replace("/dashboard");
         toast.success(response.data.message);
-        router.push("/dashboard");
+
+        // localStorage.setItem("token", response.data.data);
       } else {
         toast.error(response.data.message);
       }
@@ -35,6 +39,12 @@ export default function page() {
       toast.error(error.message || "Something went wrong!");
     }
   };
+  useEffect(() => {
+    const token = getCookie("token");
+    if (token) {
+      router.replace("/dashboard");
+    }
+  }, []);
   return (
     <>
       <div className="bg-gray-900 w-full h-[90%] text-white flex flex-col items-center justify-center px-4">
