@@ -26,7 +26,7 @@ export default function page() {
       );
       setIsLoading(false);
       if (response.data.success) {
-        setCookie("token", response.data.data, { maxAge: 60 * 60 * 24 * 7 });
+        setCookie("token", response.data.data, { maxAge: 60 * 60 * 12 });
         router.replace("/dashboard");
         toast.success(response.data.message);
 
