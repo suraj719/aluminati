@@ -128,7 +128,7 @@ export default function Navbar() {
                       router.replace("/");
                       router.refresh();
                     }}
-                    className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100"
+                    className="block w-full text-start px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100"
                   >
                     Sign out
                   </button>

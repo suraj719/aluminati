@@ -95,8 +95,46 @@ const getAlumni = async (req, res) => {
     });
   }
 };
+
+const updateAlumni = async (req, res) => {
+  try {
+    const { alumniID, ...updateFields } = req.body;
+    const alumni = await Alumni.findById(alumniID);
+
+    if (!alumni) {
+      return res.status(404).send({
+        message: "Alumni not found",
+        success: false,
+      });
+    }
+    Object.keys(updateFields).forEach((key) => {
+      if (
+        updateFields[key] === "" ||
+        updateFields[key] === null ||
+        updateFields[key] === undefined
+      ) {
+        delete updateFields[key];
+      }
+    });
+    Object.assign(alumni, updateFields);
+    await alumni.save();
+
+    res.status(200).send({
+      message: "Alumni updated successfully",
+      success: true,
+      data: alumni,
+    });
+  } catch (error) {
+    res.status(500).send({
+      message: error.message,
+      success: false,
+    });
+  }
+};
+
 module.exports = {
   AlumniSignup,
   AlumniLogin,
-  getAlumni
+  getAlumni,
+  updateAlumni,
 };

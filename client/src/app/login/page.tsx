@@ -29,8 +29,6 @@ export default function page() {
         setCookie("token", response.data.data, { maxAge: 60 * 60 * 12 });
         router.replace("/dashboard");
         toast.success(response.data.message);
-
-        // localStorage.setItem("token", response.data.data);
       } else {
         toast.error(response.data.message);
       }
@@ -85,9 +83,9 @@ export default function page() {
               disabled={isloading}
               className={`${
                 isloading
-                  ? "cursor-wait disable bg-gray-400"
-                  : "bg-indigo-600 active:bg-indigo-600 hover:bg-indigo-500"
-              } w-full px-4 py-2 text-white font-medium bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-600 rounded-lg duration-150`}
+                  ? "cursor-wait disable bg-gray-500"
+                  : "bg-indigo-600 active:bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-600"
+              } w-full px-4 py-2 text-white font-medium   rounded-lg duration-150`}
             >
               Sign in
             </button>
