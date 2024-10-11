@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "react-router-dom";
 
 const events = [
   {
@@ -31,9 +31,39 @@ const events = [
     image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df",
     slug: "mentorship-program",
   },
+  {
+    id: 3,
+    title: "Alumni Mentorship Program",
+    description:
+      "Join the mentorship program to guide and support current students in their career paths.",
+    date: "2024-09-25",
+    location: "CVRCOE, Hyderabad",
+    image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df",
+    slug: "mentorship-program",
+  },
+  {
+    id: 3,
+    title: "Alumni Mentorship Program",
+    description:
+      "Join the mentorship program to guide and support current students in their career paths.",
+    date: "2024-09-25",
+    location: "CVRCOE, Hyderabad",
+    image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df",
+    slug: "mentorship-program",
+  },
+  {
+    id: 3,
+    title: "Alumni Mentorship Program",
+    description:
+      "Join the mentorship program to guide and support current students in their career paths.",
+    date: "2024-09-25",
+    location: "CVRCOE, Hyderabad",
+    image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df",
+    slug: "mentorship-program",
+  },
 ];
 
-const page = () => {
+export default function Events() {
   return (
     <div className=" bg-gray-900 text-gray-200 p-8">
       <h1 className="text-3xl font-bold mb-8">Upcoming Events</h1>
@@ -46,11 +76,11 @@ const page = () => {
       </ul>
     </div>
   );
-};
+}
 
-const EventCard = ({ event }: any) => {
+const EventCard = ({ event }) => {
   return (
-    <div className="bg-gray-800 rounded-lg shadow-lg p-6 space-y-4">
+    <div className="bg-gray-800 rounded-lg shadow-lg p-6 space-y-4 hover:bg-gray-700">
       <img
         src={event.image}
         alt={event.title}
@@ -62,12 +92,10 @@ const EventCard = ({ event }: any) => {
           {event.date} - {event.location}
         </p>
         <p>{event.description}</p>
-        <Link href={`/events/${event.slug}`}>
+        <Link to={`/events/${event.slug}`}>
           <p className="text-blue-500 hover:underline">Learn More</p>
         </Link>
       </div>
     </div>
   );
 };
-
-export default page;

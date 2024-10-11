@@ -1,41 +1,42 @@
-"use client";
 import axios from "axios";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { Link, useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 
-export default function page() {
-  const router = useRouter();
+export default function AlumniSignupPage() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
   });
-  const [isloading, setIsLoading] = useState(false);
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-  const AlumniSignup = async (e: any) => {
+
+  const AlumniSignup = async (e) => {
     e.preventDefault();
     try {
       setIsLoading(true);
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/alumni/signup`,
+        `${process.env.REACT_APP_BACKEND_URL}/alumni/signup`,
         formData
       );
       setIsLoading(false);
       if (response.data.success) {
         toast.success(response.data.message);
-        router.push("/");
+        navigate("/"); // Redirect to home or login after successful signup
       } else {
         toast.error(response.data.message);
       }
-    } catch (error: any) {
+    } catch (error) {
       setIsLoading(false);
       toast.error(error.message || "Something went wrong!");
     }
   };
+
   return (
     <>
       <div className="w-full flex h-[90%]">
@@ -88,7 +89,7 @@ export default function page() {
                 <p className="">
                   Already have an account?{" "}
                   <Link
-                    href="login"
+                    to="/login"
                     className="font-medium text-indigo-400 hover:text-indigo-300"
                   >
                     Log in
@@ -227,9 +228,9 @@ export default function page() {
               </div>
               <button
                 type="submit"
-                disabled={isloading}
+                disabled={isLoading}
                 className={`${
-                  isloading
+                  isLoading
                     ? "cursor-wait disable bg-gray-400"
                     : "bg-indigo-600 active:bg-indigo-600 hover:bg-indigo-500"
                 } w-full px-4 py-2 text-white font-medium  rounded-lg duration-150`}

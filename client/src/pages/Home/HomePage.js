@@ -1,6 +1,6 @@
-import Link from "next/link";
+import { Link } from "react-router-dom";
 
-export default function Home() {
+export default function HomePage() {
   return (
     <>
       <div className="h-[90%] my-14 md:my-0 flex items-center justify-center">
@@ -17,13 +17,13 @@ export default function Home() {
             </p>
             <div className="pt-10 items-center justify-center space-y-3 sm:space-x-6 sm:space-y-0 sm:flex lg:justify-start">
               <Link
-                href="/signup"
+                to="/signup"
                 className="px-7 py-3 w-full bg-white text-gray-800 text-center rounded-md shadow-md block sm:w-auto"
               >
                 Get started
               </Link>
               <a
-                href="#"
+                href="/"
                 className="px-7 py-3 w-full bg-gray-700 text-gray-200 text-center rounded-md block sm:w-auto"
               >
                 Explore events
@@ -32,7 +32,7 @@ export default function Home() {
           </div>
           <div className="flex-1 text-center mt-7 lg:mt-0 lg:ml-3">
             <img
-              src="home.png"
+              src="../images/home.png"
               className="w-full mx-auto sm:w-10/12  lg:w-full"
             />
           </div>

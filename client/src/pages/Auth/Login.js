@@ -1,48 +1,50 @@
-"use client";
 import axios from "axios";
-import { getCookie, setCookie } from "cookies-next";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
+import { Link, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-export default function page() {
-  const router = useRouter();
+export default function AlumniLoginPage() {
+  const navigate = useNavigate(); // Use react-router-dom for navigation
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
-  const [isloading, setIsLoading] = useState(false);
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-  const AlumniLogin = async (e: any) => {
+
+  const AlumniLogin = async (e) => {
     e.preventDefault();
     try {
       setIsLoading(true);
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/alumni/login`,
+        `${process.env.REACT_APP_BACKEND_URL}/alumni/login`,
         formData
       );
       setIsLoading(false);
       if (response.data.success) {
-        setCookie("token", response.data.data, { maxAge: 60 * 60 * 12 });
-        router.replace("/dashboard");
+        Cookies.set("token", response.data.data, { expires: 0.5 }); // Cookies instead of setCookie
+        navigate("/dashboard"); // Use navigate for redirection
         toast.success(response.data.message);
       } else {
         toast.error(response.data.message);
       }
-    } catch (error: any) {
+    } catch (error) {
       setIsLoading(false);
       toast.error(error.message || "Something went wrong!");
     }
   };
+
   useEffect(() => {
-    const token = getCookie("token");
+    const token = Cookies.get("token");
     if (token) {
-      router.replace("/dashboard");
+      navigate("/dashboard");
     }
-  }, []);
+  }, [navigate]);
+
   return (
     <>
       <div className="bg-gray-900 w-full h-[90%] text-white flex flex-col items-center justify-center px-4">
@@ -80,9 +82,9 @@ export default function page() {
             </div>
             <button
               type="submit"
-              disabled={isloading}
+              disabled={isLoading}
               className={`${
-                isloading
+                isLoading
                   ? "cursor-wait disable bg-gray-500"
                   : "bg-indigo-600 active:bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-600"
               } w-full px-4 py-2 text-white font-medium   rounded-lg duration-150`}
@@ -126,7 +128,7 @@ export default function page() {
           <p className="text-center">
             Don't have an account?{" "}
             <Link
-              href="/signup"
+              to="/signup"
               className="font-medium text-indigo-500 hover:text-indigo-400"
             >
               Sign up
