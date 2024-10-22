@@ -1,9 +1,7 @@
-import { useState } from "react";
 import { Tooltip as ReactToolTip } from "react-tooltip";
 import { useLocation } from "react-router";
 import { Link } from "react-router-dom";
-const StudentSideBar = () => {
-  const [open, setOpen] = useState(false);
+const AlumniSideBar = ({open,setOpen}) => {
   const location = useLocation();
   const navigation = [
     {
@@ -207,17 +205,13 @@ const StudentSideBar = () => {
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
+            fill="#fff"
+            viewBox="0 -960 960 960"
             strokeWidth={2.5}
             stroke="currentColor"
-            className="w-6 h-6"
+            className="w-8 h-8 text-white"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="m18.75 4.5-7.5 7.5 7.5 7.5m-6-15L5.25 12l7.5 7.5"
-            />
+            <path d="M560-240 320-480l240-240 56 56-184 184 184 184-56 56Z" />
           </svg>
         </div>
 
@@ -237,7 +231,9 @@ const StudentSideBar = () => {
                 <li
                   data-tooltip-id={`td-${Menu.name}`}
                   className={`rounded-lg w-full flex items-center p-2 cursor-pointer hover:bg-gray-700 hover:text-white text-gray-400 text-sm gap-x-4 ${
-                    location.pathname.includes(Menu.name.toLowerCase()) ? "bg-gray-700" : ""
+                    location.pathname.includes(Menu.name.toLowerCase())
+                      ? "bg-gray-700"
+                      : ""
                   }`}
                 >
                   {Menu.icon}
@@ -264,4 +260,4 @@ const StudentSideBar = () => {
   );
 };
 
-export default StudentSideBar;
+export default AlumniSideBar;

@@ -65,8 +65,8 @@ const Jobs = () => {
   ];
 
   return (
-    <div className="p-6">
-      <h1 className=" text-white font-extrabold text-3xl sm:text-4xl text-center pb-8">
+    <div className="p-8">
+      <h1 className=" text-white font-extrabold text-3xl  pb-8">
         Latest Jobs
       </h1>
       <form className="h-14 flex flex-row w-full gap-2 items-center mb-3">

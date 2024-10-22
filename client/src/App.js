@@ -11,6 +11,7 @@ import AlumniDashboard from "./pages/Dashboard/Alumni/AlumniDashboard";
 import Events from "./pages/Dashboard/Alumni/Events";
 import StartupProfilePage from "./pages/incubation/StartupProfilePage";
 import Jobs from "./pages/Dashboard/Alumni/Jobs";
+import Onboard from "./pages/Auth/Onboard";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/signup" element={<AlumniSignupPage />} />
+        <Route path="/signup/onboard" element={<Onboard />} />
         <Route path="/login" element={<AlumniLoginPage />} />
         <Route
           path="/dashboard"
