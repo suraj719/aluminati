@@ -10,6 +10,7 @@ import AlumniLayout from "./layouts/AlumniLayout";
 import AlumniDashboard from "./pages/Dashboard/Alumni/AlumniDashboard";
 import Events from "./pages/Dashboard/Alumni/Events";
 import StartupProfilePage from "./pages/incubation/StartupProfilePage";
+import Jobs from "./pages/Dashboard/Alumni/Jobs";
 
 function App() {
   return (
@@ -32,6 +33,14 @@ function App() {
           element={
             <AlumniLayout>
               <Events />
+            </AlumniLayout>
+          }
+        />
+        <Route
+          path="/dashboard/jobs"
+          element={
+            <AlumniLayout>
+              <Jobs />
             </AlumniLayout>
           }
         />

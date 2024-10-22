@@ -24,7 +24,7 @@ const StudentSideBar = () => {
       ),
     },
     {
-      href: "/dashboard/Events",
+      href: "/dashboard/events",
       name: "Events",
       icon: (
         <svg
@@ -41,7 +41,7 @@ const StudentSideBar = () => {
       ),
     },
     {
-      href: "javascript:void(0)",
+      href: "/dashboard/jobs",
       name: "Jobs",
       icon: (
         <svg
@@ -237,7 +237,7 @@ const StudentSideBar = () => {
                 <li
                   data-tooltip-id={`td-${Menu.name}`}
                   className={`rounded-lg w-full flex items-center p-2 cursor-pointer hover:bg-gray-700 hover:text-white text-gray-400 text-sm gap-x-4 ${
-                    location.pathname.includes(Menu.name) ? "bg-gray-700" : ""
+                    location.pathname.includes(Menu.name.toLowerCase()) ? "bg-gray-700" : ""
                   }`}
                 >
                   {Menu.icon}

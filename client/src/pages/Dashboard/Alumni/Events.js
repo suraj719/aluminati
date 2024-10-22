@@ -5,7 +5,7 @@ const events = [
     id: 1,
     title: "Alumni Meet 2024",
     description:
-      "Reconnect with fellow alumni and share your experiences at our annual alumni meet.",
+      "Reconnect with fellow alumni and share your experiences at our annual alumni meet.Reconnect with fellow alumni and share your experiences at our annual alumni meet.",
     date: "2024-10-15",
     location: "Texas park, United States",
     image: "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846",
@@ -91,9 +91,9 @@ const EventCard = ({ event }) => {
         <p className="text-gray-400">
           {event.date} - {event.location}
         </p>
-        <p>{event.description}</p>
+        <p className="line-clamp-2">{event.description}</p>
         <Link to={`/events/${event.slug}`}>
-          <p className="text-blue-500 hover:underline">Learn More</p>
+          <p className="text-blue-500 hover:underline">View more details..</p>
         </Link>
       </div>
     </div>

@@ -32,6 +32,7 @@ export default function HomePage() {
           </div>
           <div className="flex-1 text-center mt-7 lg:mt-0 lg:ml-3">
             <img
+              alt="home"
               src="../images/home.png"
               className="w-full mx-auto sm:w-10/12  lg:w-full"
             />
