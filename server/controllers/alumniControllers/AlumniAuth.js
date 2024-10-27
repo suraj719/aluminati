@@ -55,13 +55,14 @@ const AlumniLogin = async (req, res) => {
       });
     }
     const token = jwt.sign({ alumniID: alumni._id }, process.env.jwt_secret, {
-      expiresIn: "12h",
+      expiresIn: "1h",
     });
+    alumni.password = null;
     res.status(200).send({
       message: "Login successful",
       success: true,
       data: token,
-      userID: alumni._id,
+      user: alumni,
     });
   } catch (error) {
     res.status(500).send({

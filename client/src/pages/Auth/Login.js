@@ -3,9 +3,12 @@ import Cookies from "js-cookie";
 import { Link, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { setAlumni } from "../../redux/alumni";
 
 export default function AlumniLoginPage() {
-  const navigate = useNavigate(); // Use react-router-dom for navigation
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -26,8 +29,9 @@ export default function AlumniLoginPage() {
       );
       setIsLoading(false);
       if (response.data.success) {
-        Cookies.set("token", response.data.data, { expires: 0.5 }); // Cookies instead of setCookie
-        navigate("/dashboard"); // Use navigate for redirection
+        Cookies.set("token", response.data.data, { expires: 1 });
+        dispatch(setAlumni(response.data.user));
+        navigate("/dashboard");
         toast.success(response.data.message);
       } else {
         toast.error(response.data.message);

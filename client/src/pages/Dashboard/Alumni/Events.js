@@ -65,11 +65,11 @@ const events = [
 
 export default function Events() {
   return (
-    <div className=" bg-gray-900 text-gray-200 p-8">
+    <div className=" bg-gray-900 text-gray-200 p-8 pt-0">
       <h1 className="text-3xl font-bold mb-8">Upcoming Events</h1>
       <ul className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
         {events.map((event) => (
-          <li key={event.id}>
+          <li key={"event" + event.id}>
             <EventCard event={event} />
           </li>
         ))}

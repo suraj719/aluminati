@@ -12,6 +12,8 @@ import Events from "./pages/Dashboard/Alumni/Events";
 import StartupProfilePage from "./pages/incubation/StartupProfilePage";
 import Jobs from "./pages/Dashboard/Alumni/Jobs";
 import Onboard from "./pages/Auth/Onboard";
+import Explore from "./pages/Dashboard/Alumni/Explore";
+import Batch from "./pages/Dashboard/Alumni/Batch";
 
 function App() {
   return (
@@ -43,6 +45,22 @@ function App() {
           element={
             <AlumniLayout>
               <Jobs />
+            </AlumniLayout>
+          }
+        />
+        <Route
+          path="/dashboard/explore"
+          element={
+            <AlumniLayout>
+              <Explore />
+            </AlumniLayout>
+          }
+        />
+        <Route
+          path="/dashboard/batch"
+          element={
+            <AlumniLayout>
+              <Batch />
             </AlumniLayout>
           }
         />

@@ -65,7 +65,7 @@ const Jobs = () => {
   ];
 
   return (
-    <div className="p-8">
+    <div className="p-8 pt-0">
       <h1 className=" text-white font-extrabold text-3xl  pb-8">
         Latest Jobs
       </h1>
@@ -88,7 +88,7 @@ const Jobs = () => {
         {jobs.length ? (
           jobs.map((job) => (
             <div
-              key={job.id}
+              key={"job"+job.id}
               className=" rounded-lg bg-gray-800 hover:bg-gray-700 p-6 space-y-4 shadow-md flex flex-col"
             >
               <div className="flex justify-between items-center mb-4">
