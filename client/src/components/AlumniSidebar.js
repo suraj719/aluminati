@@ -56,7 +56,7 @@ const AlumniSideBar = ({ open, setOpen }) => {
       ),
     },
     {
-      href: "javascript:void(0)",
+      href: "/dashboard/connect",
       name: "Connect",
       icon: (
         <svg

@@ -1,11 +1,9 @@
 import { Route, Routes } from "react-router";
-import "./App.css";
 import { ToastContainer } from "react-toastify";
 import HomePage from "./pages/Home/HomePage";
 import Navbar from "./components/Navbar";
 import AlumniLoginPage from "./pages/Auth/Login";
 import AlumniSignupPage from "./pages/Auth/Signup";
-import "react-toastify/dist/ReactToastify.css";
 import AlumniLayout from "./layouts/AlumniLayout";
 import AlumniDashboard from "./pages/Dashboard/Alumni/AlumniDashboard";
 import Events from "./pages/Dashboard/Alumni/Events";
@@ -14,6 +12,11 @@ import Jobs from "./pages/Dashboard/Alumni/Jobs";
 import Onboard from "./pages/Auth/Onboard";
 import Explore from "./pages/Dashboard/Alumni/Explore";
 import Batch from "./pages/Dashboard/Alumni/Batch";
+import "react-toastify/dist/ReactToastify.css";
+import "./App.css";
+import News from "./pages/Dashboard/Alumni/News";
+import Connections from "./pages/Dashboard/Alumni/Connections";
+import Profile from "./pages/Dashboard/Alumni/Profile";
 
 function App() {
   return (
@@ -61,6 +64,30 @@ function App() {
           element={
             <AlumniLayout>
               <Batch />
+            </AlumniLayout>
+          }
+        />
+        <Route
+          path="/dashboard/news"
+          element={
+            <AlumniLayout>
+              <News />
+            </AlumniLayout>
+          }
+        />
+        <Route
+          path="/dashboard/connect"
+          element={
+            <AlumniLayout>
+              <Connections/>
+            </AlumniLayout>
+          }
+        />
+        <Route
+          path="/dashboard/profile"
+          element={
+            <AlumniLayout>
+              <Profile/>
             </AlumniLayout>
           }
         />
