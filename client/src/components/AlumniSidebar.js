@@ -5,7 +5,7 @@ const AlumniSideBar = ({ open, setOpen }) => {
   const location = useLocation();
   const navigation = [
     {
-      href: "/dashboard",
+      href: ["/dashboard"],
       name: "Home",
       icon: (
         <svg
@@ -22,7 +22,7 @@ const AlumniSideBar = ({ open, setOpen }) => {
       ),
     },
     {
-      href: "/dashboard/events",
+      href: ["/dashboard/events", "/dashboard/event/"],
       name: "Events",
       icon: (
         <svg
@@ -39,7 +39,7 @@ const AlumniSideBar = ({ open, setOpen }) => {
       ),
     },
     {
-      href: "/dashboard/jobs",
+      href: ["/dashboard/jobs"],
       name: "Jobs",
       icon: (
         <svg
@@ -56,7 +56,7 @@ const AlumniSideBar = ({ open, setOpen }) => {
       ),
     },
     {
-      href: "/dashboard/connect",
+      href: ["/dashboard/connect"],
       name: "Connect",
       icon: (
         <svg
@@ -73,7 +73,7 @@ const AlumniSideBar = ({ open, setOpen }) => {
       ),
     },
     {
-      href: "/dashboard/explore",
+      href: ["/dashboard/explore"],
       name: "Explore",
       icon: (
         <svg
@@ -90,7 +90,7 @@ const AlumniSideBar = ({ open, setOpen }) => {
       ),
     },
     {
-      href: "javascript:void(0)",
+      href: ["javascript:void(0)"],
       name: "Nearby",
       icon: (
         <svg
@@ -107,7 +107,7 @@ const AlumniSideBar = ({ open, setOpen }) => {
       ),
     },
     {
-      href: "/dashboard/batch",
+      href: ["/dashboard/batch"],
       name: "Your batch",
       icon: (
         <svg
@@ -124,7 +124,7 @@ const AlumniSideBar = ({ open, setOpen }) => {
       ),
     },
     {
-      href: "/dashboard/news",
+      href: ["/dashboard/news"],
       name: "news",
       icon: (
         <svg
@@ -140,7 +140,7 @@ const AlumniSideBar = ({ open, setOpen }) => {
       ),
     },
     {
-      href: "javascript:void(0)",
+      href: ["javascript:void(0)"],
       name: "Settings",
       icon: (
         <svg
@@ -165,7 +165,7 @@ const AlumniSideBar = ({ open, setOpen }) => {
       ),
     },
     {
-      href: "javascript:void(0)",
+      href: ["javascript:void(0)"],
       name: "Logout",
       icon: (
         <svg
@@ -186,7 +186,6 @@ const AlumniSideBar = ({ open, setOpen }) => {
     },
   ];
   console.log(location.pathname);
-
   return (
     <div className="">
       <div
@@ -220,31 +219,47 @@ const AlumniSideBar = ({ open, setOpen }) => {
               !open ? "items-center" : "items-start"
             } space-y-3`}
           >
-            {navigation.map((Menu, index) => (
+            {navigation.map((menu, index) => (
               <Link
                 className={`${open ? "w-full" : ""}`}
                 key={index}
-                to={Menu.href}
+                to={menu.href[0]}
               >
                 <li
-                  data-tooltip-id={`td-${Menu.name}`}
+                  data-tooltip-id={`td-${menu.name}`}
                   className={`rounded-lg w-full flex items-center p-2 cursor-pointer hover:bg-gray-700 hover:text-white text-gray-400 text-sm gap-x-4 ${
-                    location.pathname.toLowerCase() === Menu.href.toLowerCase()
+                    Array.isArray(menu.href) &&
+                    menu.href.some((path) => {
+                      const normalizedPath = path.toLowerCase();
+                      const normalizedLocation =
+                        location.pathname.toLowerCase();
+                      if (normalizedPath === "/dashboard") {
+                        return normalizedLocation === "/dashboard";
+                      }
+                      if (
+                        normalizedLocation.startsWith(normalizedPath) &&
+                        normalizedLocation !== "/dashboard"
+                      ) {
+                        return true;
+                      }
+
+                      return false;
+                    })
                       ? "bg-gray-700"
                       : ""
                   }`}
                 >
-                  {Menu.icon}
+                  {menu.icon}
                   <span
                     className={`${!open && "hidden"} origin-left duration-200`}
                   >
-                    {Menu.name}
+                    {menu.name}
                   </span>
                   {!open && (
                     <ReactToolTip
-                      id={`td-${Menu.name}`}
+                      id={`td-${menu.name}`}
                       place="right"
-                      content={Menu.name}
+                      content={menu.name}
                       className="tooltip-dark"
                     />
                   )}

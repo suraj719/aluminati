@@ -17,6 +17,7 @@ import "./App.css";
 import News from "./pages/Dashboard/Alumni/News";
 import Connections from "./pages/Dashboard/Alumni/Connections";
 import Profile from "./pages/Dashboard/Alumni/Profile";
+import EventPage from "./pages/Dashboard/Alumni/EventPage";
 
 function App() {
   return (
@@ -79,7 +80,7 @@ function App() {
           path="/dashboard/connect"
           element={
             <AlumniLayout>
-              <Connections/>
+              <Connections />
             </AlumniLayout>
           }
         />
@@ -87,7 +88,15 @@ function App() {
           path="/dashboard/profile"
           element={
             <AlumniLayout>
-              <Profile/>
+              <Profile />
+            </AlumniLayout>
+          }
+        />
+        <Route
+          path="/dashboard/event/:eventId"
+          element={
+            <AlumniLayout>
+              <EventPage />
             </AlumniLayout>
           }
         />

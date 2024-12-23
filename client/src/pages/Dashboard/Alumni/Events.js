@@ -92,7 +92,7 @@ const EventCard = ({ event }) => {
           {event.date} - {event.location}
         </p>
         <p className="line-clamp-2">{event.description}</p>
-        <Link to={`/events/${event.slug}`}>
+        <Link to={`/dashboard/event/${event.id}`}>
           <p className="text-blue-500 hover:underline">View more details..</p>
         </Link>
       </div>
