@@ -2,9 +2,13 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { setAlumni } from "../../redux/alumni";
+import Cookies from "js-cookie";
 
 export default function AlumniSignupPage() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -26,8 +30,10 @@ export default function AlumniSignupPage() {
       );
       setIsLoading(false);
       if (response.data.success) {
+        Cookies.set("token", response.data.data, { expires: 1 });
         toast.success(response.data.message);
-        navigate("/"); // Redirect to home or login after successful signup
+        dispatch(setAlumni(response.data.user));
+        navigate("/signup/onboard");
       } else {
         toast.error(response.data.message);
       }

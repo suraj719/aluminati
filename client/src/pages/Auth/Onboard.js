@@ -2,14 +2,16 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
 
 export default function Onboard() {
   const navigate = useNavigate();
+  const { alumni } = useSelector((state) => state.alumni);
   const experiencesContainerRef = useRef(null);
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
+    firstName: alumni.firstName || "",
+    lastName: alumni.lastName || "",
+    email: alumni.email || "",
     phoneNumber: "",
     graduationYear: "",
     degree: "",
@@ -63,10 +65,14 @@ export default function Onboard() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    const updatedData = {
+      ...formData,
+      onboardingStatus: true,
+    };
     try {
       const response = await axios.put(
         `${process.env.REACT_APP_BACKEND_URL}/alumni/update`,
-        formData,
+        updatedData,
         {
           headers: {
             Authorization: `Bearer ${
@@ -81,7 +87,7 @@ export default function Onboard() {
       setIsLoading(false);
       if (response.data.success) {
         toast.success(response.data.message);
-        navigate("/");
+        navigate("/dashboard");
       } else {
         toast.error(response.data.message);
       }

@@ -1,28 +1,33 @@
 import { Route, Routes } from "react-router";
 import { ToastContainer } from "react-toastify";
+import { useSelector } from "react-redux";
 import HomePage from "./pages/Home/HomePage";
 import Navbar from "./components/Navbar";
 import AlumniLoginPage from "./pages/Auth/Login";
 import AlumniSignupPage from "./pages/Auth/Signup";
+import Onboard from "./pages/Auth/Onboard";
 import AlumniLayout from "./layouts/AlumniLayout";
 import AlumniDashboard from "./pages/Dashboard/Alumni/AlumniDashboard";
 import Events from "./pages/Dashboard/Alumni/Events";
+import EventPage from "./pages/Dashboard/Alumni/EventPage";
 import StartupProfilePage from "./pages/incubation/StartupProfilePage";
 import Jobs from "./pages/Dashboard/Alumni/Jobs";
-import Onboard from "./pages/Auth/Onboard";
 import Explore from "./pages/Dashboard/Alumni/Explore";
 import Batch from "./pages/Dashboard/Alumni/Batch";
-import "react-toastify/dist/ReactToastify.css";
-import "./App.css";
 import News from "./pages/Dashboard/Alumni/News";
 import Connections from "./pages/Dashboard/Alumni/Connections";
 import Profile from "./pages/Dashboard/Alumni/Profile";
-import EventPage from "./pages/Dashboard/Alumni/EventPage";
+import Loader from "./components/Loader";
+
+import "react-toastify/dist/ReactToastify.css";
+import "./App.css";
 
 function App() {
+  const { loading } = useSelector((state) => state.alert);
   return (
     <div className="h-screen bg-gray-900">
       <Navbar />
+      {loading ? <Loader /> : null}
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/signup" element={<AlumniSignupPage />} />
@@ -108,6 +113,8 @@ function App() {
         theme="dark"
         draggable
       />
+      {/* </>
+      )} */}
     </div>
   );
 }

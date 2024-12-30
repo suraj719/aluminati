@@ -74,6 +74,10 @@ const alumniSchema = new mongoose.Schema({
     type: String,
     default: null,
   },
+  onboardingStatus: {
+    type: Boolean,
+    default: false,
+  },
   previousExperience: [experienceSchema],
 });
 

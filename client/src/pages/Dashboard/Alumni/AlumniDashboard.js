@@ -15,7 +15,7 @@ const AlumniDashboard = () => {
     <div className="bg-gray-900 min-h-screen p-8 pt-0 text-white">
       {/* Welcome Section */}
       <div className="mb-6">
-        <h1 className="text-2xl font-bold">Welcome back, {alumni?.name}!</h1>
+        <h1 className="text-2xl font-bold">Welcome back, {alumni?.firstName}!</h1>
         <p className="text-gray-400 text-sm">
           Stay connected and explore what's happening in the alumni community.
         </p>

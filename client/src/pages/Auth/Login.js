@@ -31,9 +31,16 @@ export default function AlumniLoginPage() {
       if (response.data.success) {
         Cookies.set("token", response.data.data, { expires: 1 });
         dispatch(setAlumni(response.data.user));
-        navigate("/dashboard");
+        if (response.data.user.onboardingStatus === false) {
+          navigate("/signup/onboard");
+        } else {
+          navigate("/dashboard");
+        }
         toast.success(response.data.message);
       } else {
+        Cookies.remove("token");
+        navigate("/login");
+        dispatch(setAlumni(null));
         toast.error(response.data.message);
       }
     } catch (error) {
@@ -47,7 +54,7 @@ export default function AlumniLoginPage() {
     if (token) {
       navigate("/dashboard");
     }
-  }, [navigate]);
+  }, []);
 
   return (
     <>

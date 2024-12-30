@@ -13,19 +13,32 @@ const AlumniSignup = async (req, res) => {
         success: false,
       });
     }
+
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
     req.body.password = hashedPassword;
+
+    const nameParts = req.body.name.split(" ");
+    req.body.firstName = nameParts[0];
+    req.body.lastName =
+      nameParts.length > 1 ? nameParts.slice(1).join(" ") : "";
+
     const newAlumni = new Alumni(req.body);
     await newAlumni.save();
+    const token = jwt.sign({ alumniID: newAlumni._id }, process.env.jwt_secret, {
+      expiresIn: "1h",
+    });
+    newAlumni.password = null;
     res.status(200).send({
-      message: "Account created successfully and sent for verification!",
+      message: "Account created successfully",
+      user: newAlumni,
+      data: token,
       success: true,
     });
   } catch (error) {
     res.status(500).send({
       message: error.message,
-      succes: false,
+      success: false,
     });
   }
 };
@@ -48,12 +61,12 @@ const AlumniLogin = async (req, res) => {
         success: false,
       });
     }
-    if (alumni.isApproved === false) {
-      return res.status(200).send({
-        message: "Your account is not approved yet",
-        success: false,
-      });
-    }
+    // if (alumni.isApproved === false) {
+    //   return res.status(200).send({
+    //     message: "Your account is not approved yet",
+    //     success: false,
+    //   });
+    // }
     const token = jwt.sign({ alumniID: alumni._id }, process.env.jwt_secret, {
       expiresIn: "1h",
     });
@@ -87,7 +100,7 @@ const getAlumni = async (req, res) => {
     res.status(200).send({
       message: "Alumni found",
       success: true,
-      data: alumni,
+      user: alumni,
     });
   } catch (error) {
     res.status(500).send({
