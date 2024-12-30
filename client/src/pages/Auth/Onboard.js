@@ -9,9 +9,9 @@ export default function Onboard() {
   const { alumni } = useSelector((state) => state.alumni);
   const experiencesContainerRef = useRef(null);
   const [formData, setFormData] = useState({
-    firstName: alumni.firstName || "",
-    lastName: alumni.lastName || "",
-    email: alumni.email || "",
+    firstName: alumni?.firstName || "",
+    lastName: alumni?.lastName || "",
+    email: alumni?.email || "",
     phoneNumber: "",
     graduationYear: "",
     degree: "",
@@ -123,6 +123,13 @@ export default function Onboard() {
   };
 
   useEffect(() => {
+    if (!alumni?.email) {
+      toast.error("something went wrong!");
+      navigate("/login");
+    }
+    if (alumni && alumni.onboardingStatus) {
+      navigate("/dashboard");
+    }
     getCurrentLocation();
   }, []);
 

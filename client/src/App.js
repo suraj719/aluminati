@@ -8,8 +8,8 @@ import AlumniSignupPage from "./pages/Auth/Signup";
 import Onboard from "./pages/Auth/Onboard";
 import AlumniLayout from "./layouts/AlumniLayout";
 import AlumniDashboard from "./pages/Dashboard/Alumni/AlumniDashboard";
-import Events from "./pages/Dashboard/Alumni/Events";
-import EventPage from "./pages/Dashboard/Alumni/EventPage";
+import Events from "./pages/Dashboard/Alumni/events/Events";
+import EventPage from "./pages/Dashboard/Alumni/events/EventPage";
 import StartupProfilePage from "./pages/incubation/StartupProfilePage";
 import Jobs from "./pages/Dashboard/Alumni/Jobs";
 import Explore from "./pages/Dashboard/Alumni/Explore";
@@ -21,6 +21,7 @@ import Loader from "./components/Loader";
 
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
+import CreateEvent from "./pages/Dashboard/Alumni/events/CreateEvent";
 
 function App() {
   const { loading } = useSelector((state) => state.alert);
@@ -46,6 +47,22 @@ function App() {
           element={
             <AlumniLayout>
               <Events />
+            </AlumniLayout>
+          }
+        />
+        <Route
+          path="/dashboard/create-event"
+          element={
+            <AlumniLayout>
+              <CreateEvent />
+            </AlumniLayout>
+          }
+        />
+        <Route
+          path="/dashboard/event/:eventId"
+          element={
+            <AlumniLayout>
+              <EventPage />
             </AlumniLayout>
           }
         />
@@ -97,14 +114,7 @@ function App() {
             </AlumniLayout>
           }
         />
-        <Route
-          path="/dashboard/event/:eventId"
-          element={
-            <AlumniLayout>
-              <EventPage />
-            </AlumniLayout>
-          }
-        />
+
         <Route path="/incubation" element={<StartupProfilePage />} />
       </Routes>
       <ToastContainer

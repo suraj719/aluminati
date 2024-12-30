@@ -4,7 +4,6 @@ export const alertSlice = createSlice({
   name: "alert",
   initialState: {
     loading: false,
-    name:"Ram"
   },
   reducers: {
     ShowLoading: (state, action) => {

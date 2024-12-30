@@ -8,7 +8,7 @@ const AlumniSignup = async (req, res) => {
       email: req.body.email,
     });
     if (userExists) {
-      return res.status(200).send({
+      return res.status(200).json({
         message: "user already exists with this email",
         success: false,
       });
@@ -29,14 +29,14 @@ const AlumniSignup = async (req, res) => {
       expiresIn: "1h",
     });
     newAlumni.password = null;
-    res.status(200).send({
+    res.status(200).json({
       message: "Account created successfully",
       user: newAlumni,
       data: token,
       success: true,
     });
   } catch (error) {
-    res.status(500).send({
+    res.status(500).json({
       message: error.message,
       success: false,
     });
@@ -49,20 +49,20 @@ const AlumniLogin = async (req, res) => {
       email: req.body.email,
     });
     if (!alumni) {
-      return res.status(200).send({
+      return res.status(200).json({
         message: "No user found",
         success: false,
       });
     }
     const isMatch = await bcrypt.compare(req.body.password, alumni.password);
     if (!isMatch) {
-      return res.status(200).send({
+      return res.status(200).json({
         message: "Invalid password",
         success: false,
       });
     }
     // if (alumni.isApproved === false) {
-    //   return res.status(200).send({
+    //   return res.status(200).json({
     //     message: "Your account is not approved yet",
     //     success: false,
     //   });
@@ -71,14 +71,14 @@ const AlumniLogin = async (req, res) => {
       expiresIn: "1h",
     });
     alumni.password = null;
-    res.status(200).send({
+    res.status(200).json({
       message: "Login successful",
       success: true,
       data: token,
       user: alumni,
     });
   } catch (error) {
-    res.status(500).send({
+    res.status(500).json({
       message: error.message,
       success: false,
     });
@@ -91,19 +91,19 @@ const getAlumni = async (req, res) => {
       _id: req.body.alumniID,
     });
     if (!alumni) {
-      return res.status(200).send({
+      return res.status(200).json({
         message: "Alumni not found",
         success: false,
       });
     }
     alumni.password = undefined;
-    res.status(200).send({
+    res.status(200).json({
       message: "Alumni found",
       success: true,
       user: alumni,
     });
   } catch (error) {
-    res.status(500).send({
+    res.status(500).json({
       message: error.message,
       success: false,
     });
@@ -116,7 +116,7 @@ const updateAlumni = async (req, res) => {
     const alumni = await Alumni.findById(alumniID);
 
     if (!alumni) {
-      return res.status(404).send({
+      return res.status(404).json({
         message: "Alumni not found",
         success: false,
       });
@@ -133,13 +133,13 @@ const updateAlumni = async (req, res) => {
     Object.assign(alumni, updateFields);
     await alumni.save();
 
-    res.status(200).send({
+    res.status(200).json({
       message: "Alumni updated successfully",
       success: true,
       data: alumni,
     });
   } catch (error) {
-    res.status(500).send({
+    res.status(500).json({
       message: error.message,
       success: false,
     });

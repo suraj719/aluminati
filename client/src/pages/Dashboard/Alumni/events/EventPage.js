@@ -4,43 +4,58 @@ import {
   ShareIcon,
   UserPlusIcon,
 } from "@heroicons/react/24/solid";
-
-const events = [
-  {
-    id: 1,
-    title: "Alumni Meet 2024",
-    description:
-      "Reconnect with fellow alumni and share your experiences at our annual alumni meet.",
-    date: "2024-10-15",
-    location: "Texas park, United States",
-    image: "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846",
-    slug: "alumni-meet-2024",
-  },
-  {
-    id: 2,
-    title: "Web Development Workshop",
-    description:
-      "A hands-on workshop focusing on the latest web development trends and technologies.",
-    date: "2024-11-05",
-    location: "Online",
-    image: "https://images.unsplash.com/photo-1531482615713-2afd69097998",
-    slug: "web-dev-workshop",
-  },
-  {
-    id: 3,
-    title: "Alumni Mentorship Program",
-    description:
-      "Join the mentorship program to guide and support current students in their career paths.",
-    date: "2024-09-25",
-    location: "CVRCOE, Hyderabad",
-    image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df",
-    slug: "mentorship-program",
-  },
-];
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { ShowLoading, HideLoading } from "../../../../redux/alerts";
 
 export default function EventDetails() {
   const { eventId } = useParams();
-  const event = events.find((event) => event.id === parseInt(eventId));
+  const [event, setEvent] = useState(null);
+  const dispatch = useDispatch();
+  const fetchData = async () => {
+    try {
+      dispatch(ShowLoading());
+      const response = await axios.get(
+        `${process.env.REACT_APP_BACKEND_URL}/alumni/event/${eventId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${
+              document.cookie
+                .split("; ")
+                .find((row) => row.startsWith("token="))
+                ?.split("=")[1]
+            }`,
+          },
+        }
+      );
+      if (response.data.success) {
+        setEvent(response.data.event);
+      } else {
+        // toast.error("Something went wrong!");
+      }
+    } catch (error) {
+      dispatch(HideLoading());
+      // toast.error("Something went wrong!");
+    }
+    dispatch(HideLoading());
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    }).format(date);
+  };
 
   if (!event) {
     return (
@@ -69,7 +84,8 @@ export default function EventDetails() {
 
         <div className="bg-gray-800 rounded-lg shadow-lg p-8 space-y-6">
           <img
-            src={event.image}
+            // src={event.image}
+            src={"https://images.unsplash.com/photo-1517486808906-6ca8b3f04846"}
             alt={event.title}
             className="rounded-lg w-full h-96 object-cover"
           />
@@ -77,8 +93,6 @@ export default function EventDetails() {
           <div className="space-y-6">
             <div className="flex justify-between items-start">
               <h1 className="text-4xl font-bold">{event.title}</h1>
-
-              {/* Buttons Positioned Near Title */}
               <div className="flex gap-4">
                 <button className="flex items-center gap-2 bg-blue-700 text-white px-3 py-2 rounded-lg shadow-md hover:bg-blue-600 transition duration-200">
                   <UserPlusIcon className="h-5 w-5" />
@@ -88,7 +102,13 @@ export default function EventDetails() {
                   <ShareIcon className="h-5 w-5" />
                   Share
                 </button>
-                <button className="flex items-center gap-2 bg-gray-700 text-white px-3 py-2 rounded-lg shadow-md hover:bg-gray-600 transition duration-200">
+                <button
+                  onClick={() => {
+                    navigator.clipboard.writeText(window.location.href);
+                    toast.success("Link Copied to Clipboard");
+                  }}
+                  className="flex items-center gap-2 bg-gray-700 text-white px-3 py-2 rounded-lg shadow-md hover:bg-gray-600 transition duration-200"
+                >
                   <ClipboardDocumentIcon className="h-5 w-5" />
                   Copy Link
                 </button>
@@ -96,24 +116,9 @@ export default function EventDetails() {
             </div>
 
             <p className="text-gray-400">
-              {event.date} - {event.location}
+              {formatDate(event?.date)} - {event.location}
             </p>
             <p className="leading-relaxed text-lg">{event.description}</p>
-          </div>
-
-          <div className="pt-8 border-t border-gray-700">
-            <h2 className="text-2xl font-semibold mb-4">Event Details</h2>
-            <ul className="list-disc list-inside space-y-2 text-lg">
-              <li>
-                <strong>Date:</strong> {event.date}
-              </li>
-              <li>
-                <strong>Location:</strong> {event.location}
-              </li>
-              <li>
-                <strong>Description:</strong> {event.description}
-              </li>
-            </ul>
           </div>
         </div>
       </div>

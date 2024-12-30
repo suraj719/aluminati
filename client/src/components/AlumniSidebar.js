@@ -22,7 +22,7 @@ const AlumniSideBar = ({ open, setOpen }) => {
       ),
     },
     {
-      href: ["/dashboard/events", "/dashboard/event/"],
+      href: ["/dashboard/events", "/dashboard/event/", "/dashboard/create-event"],
       name: "Events",
       icon: (
         <svg
