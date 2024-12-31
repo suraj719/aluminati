@@ -9,6 +9,7 @@ module.exports = (req, res, next) => {
   try {
     const decoded = jwt.verify(token, process.env.jwt_secret);
     req.body.alumniID = decoded.alumniID;
+    req.alumniID = decoded.alumniID;
     next();
   } catch (error) {
     return res

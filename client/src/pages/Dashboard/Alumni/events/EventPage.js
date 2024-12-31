@@ -84,8 +84,7 @@ export default function EventDetails() {
 
         <div className="bg-gray-800 rounded-lg shadow-lg p-8 space-y-6">
           <img
-            // src={event.image}
-            src={"https://images.unsplash.com/photo-1517486808906-6ca8b3f04846"}
+            src={event.image}
             alt={event.title}
             className="rounded-lg w-full h-96 object-cover"
           />

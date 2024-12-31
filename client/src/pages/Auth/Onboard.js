@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Form, useNavigate } from "react-router-dom";
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
@@ -9,6 +9,7 @@ export default function Onboard() {
   const { alumni } = useSelector((state) => state.alumni);
   const experiencesContainerRef = useRef(null);
   const [formData, setFormData] = useState({
+    profilePicture: null,
     firstName: alumni?.firstName || "",
     lastName: alumni?.lastName || "",
     email: alumni?.email || "",
@@ -20,19 +21,25 @@ export default function Onboard() {
     currentCompany: "",
     yearsOfExperience: "",
     location: {
-      latitude: 0,
-      longitude: 0,
+      // latitude: 0,
+      // longitude: 0,
     },
     resume: null,
     previousExperience: [
-      { companyName: "", jobTitle: "", startYear: "", endYear: "" },
+      // { companyName: "", jobTitle: "", startYear: "", endYear: "" },
     ],
   });
+
   const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
     const { id, value } = e.target;
     setFormData({ ...formData, [id]: value });
+  };
+
+  const handleFileChange = (e) => {
+    const { id } = e.target;
+    setFormData({ ...formData, [id]: e.target.files[0] });
   };
 
   const handleExperienceChange = (index, e) => {
@@ -65,16 +72,46 @@ export default function Onboard() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    const updatedData = {
-      ...formData,
-      onboardingStatus: true,
-    };
+
+    // Create a new FormData object
+    const dform = new FormData();
+
+    // Append profile picture (if selected)
+    if (formData.profilePicture) {
+      dform.append("profilePicture", formData.profilePicture);
+    }
+
+    // Append resume (if selected)
+    if (formData.resume) {
+      dform.append("resume", formData.resume);
+    }
+
+    // Append other form data fields
+    dform.append("firstName", formData.firstName);
+    dform.append("lastName", formData.lastName);
+    dform.append("email", formData.email);
+    dform.append("phoneNumber", formData.phoneNumber);
+    dform.append("graduationYear", formData.graduationYear);
+    dform.append("degree", formData.degree);
+    dform.append("major", formData.major);
+    dform.append("currentJobTitle", formData.currentJobTitle);
+    dform.append("currentCompany", formData.currentCompany);
+    dform.append("yearsOfExperience", formData.yearsOfExperience);
+    dform.append("location", JSON.stringify(formData.location));
+    dform.append(
+      "previousExperience",
+      JSON.stringify(formData.previousExperience)
+    );
+
+    dform.append("onboardingStatus", true);
+
     try {
-      const response = await axios.put(
+      const response = await axios.post(
         `${process.env.REACT_APP_BACKEND_URL}/alumni/update`,
-        updatedData,
+        dform,
         {
           headers: {
+            "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${
               document.cookie
                 .split("; ")
@@ -84,7 +121,9 @@ export default function Onboard() {
           },
         }
       );
+
       setIsLoading(false);
+
       if (response.data.success) {
         toast.success(response.data.message);
         navigate("/dashboard");
@@ -95,10 +134,6 @@ export default function Onboard() {
       setIsLoading(false);
       toast.error(error.message || "Something went wrong!");
     }
-  };
-
-  const handleResumeUpload = (e) => {
-    setFormData({ ...formData, resume: e.target.files[0] });
   };
 
   const getCurrentLocation = () => {
@@ -143,6 +178,22 @@ export default function Onboard() {
         }}
         className="scrollbar-custom  bg-gray-800 text-white shadow-md rounded px-8 pt-6 mx-8 flex flex-col"
       >
+        <div className="mb-6">
+          <label
+            className="block uppercase text-xs font-bold mb-2"
+            htmlFor="profilePicture"
+          >
+            Profile Photo
+          </label>
+          <input
+            className="appearance-none block w-full bg-gray-700 text-white border border-gray-600 rounded py-3 px-4 mb-3 focus:outline-none focus:border-indigo-500"
+            id="profilePicture"
+            type="file"
+            accept="image/*"
+            name="profilePicture"
+            onChange={handleFileChange}
+          />
+        </div>
         <div className="-mx-3 md:flex mb-6">
           <div className="md:w-1/2 px-3 mb-6 md:mb-0">
             <label
@@ -365,13 +416,21 @@ export default function Onboard() {
               className="appearance-none block w-full bg-gray-700 text-white border border-gray-600 rounded py-3 px-4 mb-3 focus:outline-none focus:border-indigo-500"
               id="resume"
               type="file"
-              onChange={handleResumeUpload}
+              onChange={handleFileChange}
             />
           </div>
         </div>
 
         {/* Previous Experience Section */}
         <h2 className="text-lg font-bold mb-4">Previous Experiences</h2>
+        {formData.previousExperience.length === 0 && (
+          <p
+            onClick={addExperience}
+            className="text-lg mb-5 text-gray-100 hover:underline hover:cursor-pointer"
+          >
+            Add an experience
+          </p>
+        )}
         {formData.previousExperience.map((experience, index) => (
           <div key={index} className="-mx-3 md:flex mb-6">
             <div className="md:w-1/3 px-3">
@@ -451,12 +510,15 @@ export default function Onboard() {
           className="bg-green-600 w-full md:w-1/2 hover:bg-green-500 text-white font-bold py-2 px-4 rounded h-12"
           onClick={addExperience}
         >
-          Add Another Experience
+          Add Experience
         </button>
         <button
           onClick={handleSubmit}
           type="submit"
-          className="bg-blue-600 w-full md:w-1/2 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded h-12"
+          disabled={isLoading}
+          className={`bg-blue-600 w-full md:w-1/2 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded h-12
+          ${isLoading ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-700"}
+          `}
         >
           Submit
         </button>

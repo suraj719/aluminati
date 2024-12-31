@@ -12,8 +12,9 @@ const CreateEvent = () => {
     description: "",
     date: "",
     location: "",
-    // image: "",
+    image: null,
   });
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -22,14 +23,35 @@ const CreateEvent = () => {
     });
   };
 
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setFormData((prev) => ({
+        ...prev,
+        image: file,
+      }));
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+
     try {
+      const data = new FormData();
+      data.append("title", formData.title);
+      data.append("description", formData.description);
+      data.append("date", formData.date);
+      data.append("location", formData.location);
+      if (formData.image) {
+        data.append("image", formData.image);
+      }
       const response = await axios.post(
         `${process.env.REACT_APP_BACKEND_URL}/alumni/create-event`,
-        formData,
+        data,
         {
           headers: {
+            "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${
               document.cookie
                 .split("; ")
@@ -39,15 +61,19 @@ const CreateEvent = () => {
           },
         }
       );
+
       setIsLoading(false);
+
       if (response.data.success) {
         toast.success("Event Created Successfully!");
         navigate("/dashboard/events");
       } else {
-        toast.error(response.data.message);
+        toast.error(response.data.message || "Failed to create event");
       }
     } catch (error) {
-      toast.error("something went Wrong!");
+      setIsLoading(false);
+      toast.error("Something went wrong! Please try again.");
+      console.error("Error creating event:", error);
     }
   };
 
@@ -140,16 +166,18 @@ const CreateEvent = () => {
             type="file"
             accept="image/*"
             name="image"
-            // onChange={handleImageUpload}
-            // required
+            onChange={handleImageUpload}
             className="appearance-none block w-full bg-gray-700 text-white border border-gray-600 rounded py-3 px-4 mb-3 focus:outline-none focus:border-indigo-500"
           />
         </div>
         <button
           type="submit"
-          className="px-6 py-3 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700"
+          className={`px-6 py-3 bg-indigo-600 text-white rounded-lg shadow-md ${
+            loading ? "opacity-50 cursor-not-allowed" : "hover:bg-indigo-700"
+          }`}
+          disabled={loading}
         >
-          Create Event
+          {loading ? "Creating Event..." : "Create Event"}
         </button>
       </form>
     </div>

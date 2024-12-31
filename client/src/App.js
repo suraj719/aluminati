@@ -22,6 +22,7 @@ import Loader from "./components/Loader";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 import CreateEvent from "./pages/Dashboard/Alumni/events/CreateEvent";
+import ProtectedAlumniRoute from "./utils/ProtectedAlumniRoute";
 
 function App() {
   const { loading } = useSelector((state) => state.alert);
@@ -32,7 +33,14 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/signup" element={<AlumniSignupPage />} />
-        <Route path="/signup/onboard" element={<Onboard />} />
+        <Route
+          path="/signup/onboard"
+          element={
+            <ProtectedAlumniRoute>
+              <Onboard />
+            </ProtectedAlumniRoute>
+          }
+        />
         <Route path="/login" element={<AlumniLoginPage />} />
         <Route
           path="/dashboard"

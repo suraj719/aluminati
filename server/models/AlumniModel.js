@@ -19,6 +19,9 @@ const experienceSchema = new mongoose.Schema({
 
 const alumniSchema = new mongoose.Schema(
   {
+    profilePicture: {
+      type: String,
+    },
     firstName: {
       type: String,
       trim: true,

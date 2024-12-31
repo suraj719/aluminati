@@ -1,4 +1,5 @@
 const Event = require("../../models/EventModel");
+const uploadToS3 = require("../../util/AWSUpload");
 
 const getEvents = async (req, res) => {
   try {
@@ -36,18 +37,18 @@ const getEventById = async (req, res) => {
 };
 
 const createEvent = async (req, res) => {
-  const { id, title, description, date, location, image } = req.body;
-
-  const newEvent = new Event({
-    id,
-    title,
-    description,
-    date,
-    location,
-    image,
-  });
-
+  const { id, title, description, date, location } = req.body;
+  const file = req.file;
   try {
+    const imgUrl = await uploadToS3(file);
+    const newEvent = new Event({
+      id,
+      title,
+      description,
+      date,
+      location,
+      image: imgUrl,
+    });
     const savedEvent = await newEvent.save();
     res.status(201).json({
       event: savedEvent,

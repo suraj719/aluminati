@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Alumni = require("../../models/AlumniModel");
+const uploadToS3 = require("../../util/AWSUpload");
 
 const AlumniSignup = async (req, res) => {
   try {
@@ -25,9 +26,13 @@ const AlumniSignup = async (req, res) => {
 
     const newAlumni = new Alumni(req.body);
     await newAlumni.save();
-    const token = jwt.sign({ alumniID: newAlumni._id }, process.env.jwt_secret, {
-      expiresIn: "1h",
-    });
+    const token = jwt.sign(
+      { alumniID: newAlumni._id },
+      process.env.jwt_secret,
+      {
+        expiresIn: "1h",
+      }
+    );
     newAlumni.password = null;
     res.status(200).json({
       message: "Account created successfully",
@@ -112,15 +117,36 @@ const getAlumni = async (req, res) => {
 
 const updateAlumni = async (req, res) => {
   try {
-    const { alumniID, ...updateFields } = req.body;
-    const alumni = await Alumni.findById(alumniID);
-
+    const alumni = await Alumni.findOne({
+      _id: req.alumniID,
+    });
     if (!alumni) {
       return res.status(404).json({
         message: "Alumni not found",
         success: false,
       });
     }
+    const updateFields = {
+      ...req.body,
+      location: JSON.parse(req.body.location),
+      previousExperience: JSON.parse(req.body.previousExperience),
+    };
+    // Extract files from the request
+    const profilePicFile = req.files?.profilePicture?.[0];
+    const resumeFile = req.files?.resume?.[0];
+
+    // Upload files to S3 if provided
+    if (profilePicFile) {
+      const profilePicUrl = await uploadToS3(profilePicFile); // Function to handle S3 upload
+      updateFields.profilePicture = profilePicUrl;
+    }
+
+    if (resumeFile) {
+      const resumeUrl = await uploadToS3(resumeFile); // Function to handle S3 upload
+      updateFields.resume = resumeUrl;
+    }
+
+    // Remove empty or null fields
     Object.keys(updateFields).forEach((key) => {
       if (
         updateFields[key] === "" ||
@@ -130,6 +156,8 @@ const updateAlumni = async (req, res) => {
         delete updateFields[key];
       }
     });
+
+    // Update alumni details
     Object.assign(alumni, updateFields);
     await alumni.save();
 

@@ -15,7 +15,7 @@ const initialProfile = {
     latitude: 0,
     longitude: 0,
   },
-  profilePhoto: null,
+  profilePicture: null,
   resume: null,
   previousExperience: [
     {
@@ -108,22 +108,22 @@ export default function Profile() {
           <div className="mb-6">
             <label
               className="block uppercase text-xs font-bold mb-2"
-              htmlFor="profilePhoto"
+              htmlFor="profileicture"
             >
               Profile Photo
             </label>
             {isEditing ? (
               <input
                 className="appearance-none block w-full bg-gray-700 text-white border border-gray-600 rounded py-3 px-4 mb-3 focus:outline-none focus:border-indigo-500"
-                id="profilePhoto"
+                id="profilePicture"
                 type="file"
-                name="profilePhoto"
+                name="profilePicture"
                 onChange={handleFileChange}
               />
             ) : (
-              profile.profilePhoto && (
+              profile.profilePicture && (
                 <img
-                  src={URL.createObjectURL(profile.profilePhoto)}
+                  src={URL.createObjectURL(profile.profilePicture)}
                   alt="Profile"
                   className="w-32 h-32 rounded-full object-cover mb-3"
                 />
