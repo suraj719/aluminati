@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const connectDB = require("./Connection");
 const alumniRoutes = require("./routes/alumniRoutes");
+const startupRoutes = require("./routes/startupRoutes");
 const app = express();
 const port = process.env.PORT || 5000;
 app.use(cors());
@@ -12,6 +13,8 @@ app.get("/", (req, res) => {
   res.send("Hello World!!");
 });
 app.use("/api/alumni", alumniRoutes);
+app.use("/api/startup", startupRoutes);
+
 const start = async () => {
   try {
     await connectDB(process.env.MONGO_URL);

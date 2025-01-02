@@ -41,11 +41,11 @@ export default function AlumniLoginPage() {
         Cookies.remove("token");
         navigate("/login");
         dispatch(setAlumni(null));
-        toast.error(response.data.message);
+        toast.error("something went wrong!");
       }
     } catch (error) {
       setIsLoading(false);
-      toast.error(error.message || "Something went wrong!");
+      toast.error("Something went wrong!");
     }
   };
 

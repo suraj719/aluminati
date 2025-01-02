@@ -1,36 +1,17 @@
 import React, { useState } from "react";
-
-const initialProfile = {
-  firstName: "John",
-  lastName: "Doe",
-  email: "john.doe@example.com",
-  phoneNumber: "123-456-7890",
-  graduationYear: 2010,
-  degree: "B.Sc. Computer Science",
-  major: "Computer Science",
-  currentJobTitle: "Software Engineer",
-  currentCompany: "Tech Corp",
-  yearsOfExperience: 5,
-  location: {
-    latitude: 0,
-    longitude: 0,
-  },
-  profilePicture: null,
-  resume: null,
-  previousExperience: [
-    {
-      companyName: "Previous Company",
-      jobTitle: "Junior Developer",
-      startYear: 2015,
-      endYear: 2018,
-    },
-  ],
-};
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import axios from "axios";
+import { useNavigate } from "react-router";
 
 export default function Profile() {
-  const [profile, setProfile] = useState(initialProfile);
+  const navigate = useNavigate();
+  const { alumni } = useSelector((state) => state.alumni);
+  const [profile, setProfile] = useState(alumni || null);
   const [isEditing, setIsEditing] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
+  console.log(profile);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setProfile({ ...profile, [name]: value });
@@ -79,14 +60,83 @@ export default function Profile() {
       console.error("Geolocation is not supported by this browser.");
     }
   };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    // Create a new FormData object
+    const dform = new FormData();
+
+    // Append profile picture (if selected)
+    if (profile.profilePicture) {
+      dform.append("profilePicture", profile.profilePicture);
+    }
+
+    // Append resume (if selected)
+    if (profile.resume) {
+      dform.append("resume", profile.resume);
+    }
+
+    // Append other form data fields
+    dform.append("firstName", profile.firstName || "");
+    dform.append("lastName", profile.lastName || "");
+    dform.append("email", profile.email || "");
+    dform.append("phoneNumber", profile.phoneNumber || "");
+    dform.append("graduationYear", profile.graduationYear || "");
+    dform.append("degree", profile.degree || "");
+    dform.append("major", profile.major || "");
+    dform.append("currentJobTitle", profile.currentJobTitle || "");
+    dform.append("currentCompany", profile.currentCompany || "");
+    dform.append("yearsOfExperience", profile.yearsOfExperience || "");
+    dform.append("location", JSON.stringify(profile.location));
+    dform.append(
+      "previousExperience",
+      JSON.stringify(profile.previousExperience)
+    );
+
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_BACKEND_URL}/alumni/update`,
+        dform,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${
+              document.cookie
+                .split("; ")
+                .find((row) => row.startsWith("token="))
+                ?.split("=")[1]
+            }`,
+          },
+        }
+      );
+
+      setIsLoading(false);
+
+      if (response.data.success) {
+        toast.success(response.data.message);
+        setProfile(response.data.data);
+      } else {
+        toast.error("Something went wrong!");
+      }
+    } catch (error) {
+      setIsLoading(false);
+      toast.error("Something went wrong!");
+    }
+    toggleEdit();
+  };
+
   return (
     <div className="p-8 pt-0 bg-gray-900 text-white min-h-screen">
       <h1 className="text-3xl font-bold mb-6">Profile</h1>
       <div className="space-y-6">
         <div className="flex space-x-4">
           <button
-            onClick={toggleEdit}
-            className="px-6 py-3 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700"
+            onClick={isEditing ? handleSubmit : toggleEdit}
+            className={`px-6 py-3 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 ${
+              isLoading ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-700"
+            } `}
+            disabled={isLoading}
           >
             {isEditing ? "Save" : "Edit"}
           </button>
@@ -121,13 +171,11 @@ export default function Profile() {
                 onChange={handleFileChange}
               />
             ) : (
-              profile.profilePicture && (
-                <img
-                  src={URL.createObjectURL(profile.profilePicture)}
-                  alt="Profile"
-                  className="w-32 h-32 rounded-full object-cover mb-3"
-                />
-              )
+              <img
+                src={profile?.profilePicture || "/images/defppic.jpg"}
+                alt="Profile"
+                className="w-32 h-32 rounded-full object-cover mb-3"
+              />
             )}
           </div>
           <div className="-mx-3 md:flex mb-6">
@@ -407,11 +455,7 @@ export default function Profile() {
                 />
               ) : (
                 profile.resume && (
-                  <a
-                    href={URL.createObjectURL(profile.resume)}
-                    download
-                    className="text-blue-500"
-                  >
+                  <a href={profile.resume} download className="text-blue-500">
                     Download Resume
                   </a>
                 )

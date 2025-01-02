@@ -68,7 +68,7 @@ const CreateEvent = () => {
         toast.success("Event Created Successfully!");
         navigate("/dashboard/events");
       } else {
-        toast.error(response.data.message || "Failed to create event");
+        toast.error("Failed to create event");
       }
     } catch (error) {
       setIsLoading(false);

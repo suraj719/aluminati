@@ -1,74 +1,11 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { HideLoading, ShowLoading } from "../../../../redux/alerts";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import axios from "axios";
 
-const tempevents = [
-  {
-    id: 1,
-    title: "Alumni Meet 2024",
-    description:
-      "Reconnect with fellow alumni and share your experiences at our annual alumni meet.Reconnect with fellow alumni and share your experiences at our annual alumni meet.",
-    date: "2024-10-15",
-    location: "Texas park, United States",
-    image: "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846",
-  },
-  {
-    id: 2,
-    title: "Web Development Workshop",
-    description:
-      "A hands-on workshop focusing on the latest web development trends and technologies.",
-    date: "2024-11-05",
-    location: "Online",
-    image: "https://images.unsplash.com/photo-1531482615713-2afd69097998",
-    slug: "web-dev-workshop",
-  },
-  {
-    id: 3,
-    title: "Alumni Mentorship Program",
-    description:
-      "Join the mentorship program to guide and support current students in their career paths.",
-    date: "2024-09-25",
-    location: "CVRCOE, Hyderabad",
-    image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df",
-    slug: "mentorship-program",
-  },
-  {
-    id: 3,
-    title: "Alumni Mentorship Program",
-    description:
-      "Join the mentorship program to guide and support current students in their career paths.",
-    date: "2024-09-25",
-    location: "CVRCOE, Hyderabad",
-    image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df",
-    slug: "mentorship-program",
-  },
-  {
-    id: 3,
-    title: "Alumni Mentorship Program",
-    description:
-      "Join the mentorship program to guide and support current students in their career paths.",
-    date: "2024-09-25",
-    location: "CVRCOE, Hyderabad",
-    image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df",
-    slug: "mentorship-program",
-  },
-  {
-    id: 3,
-    title: "Alumni Mentorship Program",
-    description:
-      "Join the mentorship program to guide and support current students in their career paths.",
-    date: "2024-09-25",
-    location: "CVRCOE, Hyderabad",
-    image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df",
-    slug: "mentorship-program",
-  },
-];
-
 export default function Events() {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [events, setEvents] = useState([]);
   const fetchData = async () => {
@@ -106,12 +43,12 @@ export default function Events() {
     <div className=" bg-gray-900 text-gray-200 p-8 pt-0">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold">Upcoming Events</h1>
-        <button
-          onClick={() => navigate("/dashboard/create-event")}
+        <Link
+          to="/dashboard/create-event"
           className="bg-blue-500 text-white h-full px-4 py-2 rounded-lg hover:bg-blue-600"
         >
           Create Event
-        </button>
+        </Link>
       </div>
       <ul className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
         {events?.map((event) => (

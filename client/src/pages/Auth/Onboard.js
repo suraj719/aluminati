@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Form, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
@@ -128,11 +128,11 @@ export default function Onboard() {
         toast.success(response.data.message);
         navigate("/dashboard");
       } else {
-        toast.error(response.data.message);
+        toast.error("Something went wrong!");
       }
     } catch (error) {
       setIsLoading(false);
-      toast.error(error.message || "Something went wrong!");
+      toast.error("Something went wrong!");
     }
   };
 

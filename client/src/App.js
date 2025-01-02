@@ -11,7 +11,7 @@ import AlumniDashboard from "./pages/Dashboard/Alumni/AlumniDashboard";
 import Events from "./pages/Dashboard/Alumni/events/Events";
 import EventPage from "./pages/Dashboard/Alumni/events/EventPage";
 import StartupProfilePage from "./pages/incubation/StartupProfilePage";
-import Jobs from "./pages/Dashboard/Alumni/Jobs";
+import Jobs from "./pages/Dashboard/Alumni/jobs/Jobs";
 import Explore from "./pages/Dashboard/Alumni/Explore";
 import Batch from "./pages/Dashboard/Alumni/Batch";
 import News from "./pages/Dashboard/Alumni/News";
@@ -23,6 +23,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 import CreateEvent from "./pages/Dashboard/Alumni/events/CreateEvent";
 import ProtectedAlumniRoute from "./utils/ProtectedAlumniRoute";
+import JobPage from "./pages/Dashboard/Alumni/jobs/JobPage";
 
 function App() {
   const { loading } = useSelector((state) => state.alert);
@@ -79,6 +80,14 @@ function App() {
           element={
             <AlumniLayout>
               <Jobs />
+            </AlumniLayout>
+          }
+        />
+        <Route
+          path="/dashboard/job/:jobId"
+          element={
+            <AlumniLayout>
+              <JobPage />
             </AlumniLayout>
           }
         />
