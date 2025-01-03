@@ -12,7 +12,6 @@ import Events from "./pages/Dashboard/Alumni/events/Events";
 import EventPage from "./pages/Dashboard/Alumni/events/EventPage";
 import StartupProfilePage from "./pages/incubation/StartupProfilePage";
 import Jobs from "./pages/Dashboard/Alumni/jobs/Jobs";
-import Explore from "./pages/Dashboard/Alumni/Explore";
 import Batch from "./pages/Dashboard/Alumni/Batch";
 import News from "./pages/Dashboard/Alumni/News";
 import Connections from "./pages/Dashboard/Alumni/Connections";
@@ -24,6 +23,8 @@ import "./App.css";
 import CreateEvent from "./pages/Dashboard/Alumni/events/CreateEvent";
 import ProtectedAlumniRoute from "./utils/ProtectedAlumniRoute";
 import JobPage from "./pages/Dashboard/Alumni/jobs/JobPage";
+import Posts from "./pages/Dashboard/Alumni/Explore/Posts";
+import CreatePost from "./pages/Dashboard/Alumni/Explore/CreatePost";
 
 function App() {
   const { loading } = useSelector((state) => state.alert);
@@ -95,7 +96,15 @@ function App() {
           path="/dashboard/explore"
           element={
             <AlumniLayout>
-              <Explore />
+              <Posts />
+            </AlumniLayout>
+          }
+        />
+        <Route
+          path="/dashboard/create-post"
+          element={
+            <AlumniLayout>
+              <CreatePost />
             </AlumniLayout>
           }
         />
@@ -124,7 +133,7 @@ function App() {
           }
         />
         <Route
-          path="/dashboard/profile"
+          path="/dashboard/profile/:userId"
           element={
             <AlumniLayout>
               <Profile />

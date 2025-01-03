@@ -8,6 +8,7 @@ const {
   AlumniLogin,
   getAlumni,
   updateAlumni,
+  getAlumniById,
 } = require("../controllers/alumniControllers/AlumniAuth");
 const {
   getEvents,
@@ -15,12 +16,17 @@ const {
   getEventById,
 } = require("../controllers/alumniControllers/Events");
 const alumniMiddleware = require("../middlewares/alumniMiddleware");
+const {
+  getPosts,
+  createPost,
+} = require("../controllers/alumniControllers/Posts");
 
 router.post("/signup", AlumniSignup);
 router.post("/login", AlumniLogin);
 router.post("/get-alumni", alumniMiddleware, getAlumni);
+router.get("/get-alumni/:id", alumniMiddleware, getAlumniById);
 router.post(
-  "/update",
+  "/update-alumni",
   alumniMiddleware,
   upload.fields([
     { name: "profilePicture", maxCount: 1 },
@@ -37,5 +43,13 @@ router.post(
   createEvent
 );
 router.get("/event/:id", alumniMiddleware, getEventById);
+
+router.get("/posts", alumniMiddleware, getPosts);
+router.post(
+  "/create-post",
+  alumniMiddleware,
+  upload.single("image"),
+  createPost
+);
 
 module.exports = router;

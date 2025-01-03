@@ -174,9 +174,35 @@ const updateAlumni = async (req, res) => {
   }
 };
 
+const getAlumniById = async (req, res) => {
+  try {
+    const alumni = await Alumni.findOne({
+      _id: req.params.id,
+    });
+    if (!alumni) {
+      return res.status(200).json({
+        message: "Alumni not found",
+        success: false,
+      });
+    }
+    alumni.password = undefined;
+    res.status(200).json({
+      message: "Alumni found",
+      success: true,
+      user: alumni,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+      success: false,
+    });
+  }
+};
+
 module.exports = {
   AlumniSignup,
   AlumniLogin,
   getAlumni,
   updateAlumni,
+  getAlumniById,
 };

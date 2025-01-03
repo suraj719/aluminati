@@ -25,7 +25,11 @@ export default function Events() {
         }
       );
       if (response.data.success) {
-        setEvents(response.data.events);
+        setEvents(
+          response.data.events.sort(
+            (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+          )
+        );
       } else {
         toast.error("something went wrong!");
       }

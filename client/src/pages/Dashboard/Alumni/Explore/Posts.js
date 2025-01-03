@@ -1,72 +1,92 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import moment from "moment";
 import {
   HandThumbUpIcon,
   ChatBubbleLeftEllipsisIcon,
 } from "@heroicons/react/24/outline";
+import { useDispatch } from "react-redux";
+import { HideLoading, ShowLoading } from "../../../../redux/alerts";
+import { toast } from "react-toastify";
+import axios from "axios";
+import { Link } from "react-router-dom";
 
-// Static data for posts
-const posts = [
-  {
-    id: 1,
-    user: {
-      name: "John Doe",
-      headline: "Software Engineer at Tech Co.",
-      profilePicture: "https://via.placeholder.com/150",
-    },
-    content:
-      "Excited to share that I've started a new role at Tech Co.!Excited to share that I've started a new role at Tech Co.!Excited to share that I've started a new role at Tech Co.!Excited to share that I've started a new role at Tech Co.!Excited to share that I've started a new role at Tech Co.!Excited to share that I've started a new role at Tech Co.!Excited to share that I've started a new role at Tech Co.!Excited to share that I've started a new role at Tech Co.!Excited to share that I've started a new role at Tech Co.!Excited to share that I've started a new role at Tech Co.!Excited to share that I've started a new role at Tech Co.!Excited to share that I've started a new role at Tech Co.!Excited to share that I've started a new role at Tech Co.!Excited to share that I've started a new role at Tech Co.!Excited to share that I've started a new role at Tech Co.!Excited to share that I've started a new role at Tech Co.!Excited to share that I've started a new role at Tech Co.!",
-    image: "https://via.placeholder.com/600",
-    timestamp: "2024-10-26T14:30:00Z",
-    likes: 12,
-    comments: 5,
-  },
-  {
-    id: 2,
-    user: {
-      name: "Jane Smith",
-      headline: "Product Manager at Startup Inc.",
-      profilePicture: "https://via.placeholder.com/150",
-    },
-    content:
-      "Just wrapped up a great meeting with the team. Exciting times ahead!",
-    image: "",
-    timestamp: "2023-10-24T10:15:00Z",
-    likes: 8,
-    comments: 3,
-  },
-  {
-    id: 3,
-    user: {
-      name: "Alice Johnson",
-      headline: "Freelance Graphic Designer",
-      profilePicture: "https://via.placeholder.com/150",
-    },
-    content:
-      "Here's a sneak peek of a project I've been working on. Stay tuned!",
-    image: "https://via.placeholder.com/600",
-    timestamp: "2023-10-23T09:00:00Z",
-    likes: 20,
-    comments: 10,
-  },
-];
+const Posts = () => {
+  const dispatch = useDispatch();
+  const [posts, setPosts] = useState(null);
 
-const Explore = () => {
+  const fetchData = async () => {
+    try {
+      dispatch(ShowLoading());
+      const response = await axios.get(
+        `${process.env.REACT_APP_BACKEND_URL}/alumni/posts`,
+        {
+          headers: {
+            Authorization: `Bearer ${
+              document.cookie
+                .split("; ")
+                .find((row) => row.startsWith("token="))
+                ?.split("=")[1]
+            }`,
+          },
+        }
+      );
+      if (response.data.success) {
+        setPosts(
+          response.data.posts.sort(
+            (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+          )
+        );
+      } else {
+        toast.error("Something went wrong!");
+      }
+      dispatch(HideLoading());
+    } catch (error) {
+      dispatch(HideLoading());
+      toast.error("Something went wrong!");
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
-    <div className="bg-gray-900 min-h-screen p-8 pt-0 text-white">
-      <div className="space-y-6 -my-4">
-        {posts.map((post) => (
-          <Post
-            key={post.id}
-            user={post.user}
-            content={post.content}
-            image={post.image}
-            timestamp={post.timestamp}
-            likes={post.likes}
-            comments={post.comments}
-          />
-        ))}
-      </div>
+    <div className="bg-gray-900 max-h-screen p-8 pt-0 text-white">
+      {posts?.length > 0 ? (
+        <>
+          <div className="space-y-6 pt-2">
+            <div className="justify-self-end">
+              <Link
+                to="/dashboard/create-post"
+                className=" bg-blue-500 text-white h-full px-4 py-2 rounded-lg hover:bg-blue-600"
+              >
+                Create Post
+              </Link>
+            </div>
+            {posts.map((post) => (
+              <Post
+                key={post.id}
+                user={post.user}
+                content={post.content}
+                image={post.image}
+                timestamp={post.timestamp}
+                likes={post.likes}
+                comments={post.comments}
+              />
+            ))}
+          </div>
+        </>
+      ) : (
+        <>
+          <p className="text-center text-xl my-4">No posts found</p>
+          <Link
+            className="text-center hover:underline"
+            to="/dashboard/create-post"
+          >
+            <p>create post</p>
+          </Link>
+        </>
+      )}
     </div>
   );
 };
@@ -78,20 +98,22 @@ const Post = ({ user, content, image, timestamp, likes, comments }) => {
       <div className="flex-1 flex flex-col justify-between">
         {/* User Information and Content */}
         <div>
-          <div className="flex items-center mb-4">
-            <img
-              src={user.profilePicture}
-              alt={`${user.name}'s profile`}
-              className="w-12 h-12 rounded-full mr-4"
-            />
-            <div>
-              <h3 className="text-lg font-semibold">{user.name}</h3>
-              <p className="text-gray-400 text-sm">{user.headline}</p>
-              <p className="text-gray-500 text-xs">
-                {moment(timestamp).fromNow()}
-              </p>
+          <Link to={`/dashboard/profile/${user.id}`}>
+            <div className="flex items-center mb-4">
+              <img
+                src={user.profilePicture || "/images/defppic.jpg"}
+                alt={`${user.name}'s profile`}
+                className="w-12 h-12 rounded-full mr-4"
+              />
+              <div>
+                <h3 className="text-lg font-semibold">{user.name}</h3>
+                <p className="text-gray-400 text-sm">{user.headline}</p>
+                <p className="text-gray-500 text-xs">
+                  {moment(timestamp).fromNow()}
+                </p>
+              </div>
             </div>
-          </div>
+          </Link>
 
           {/* Post Content */}
           <div className="mb-4">
@@ -176,4 +198,4 @@ const Post = ({ user, content, image, timestamp, likes, comments }) => {
   );
 };
 
-export default Explore;
+export default Posts;

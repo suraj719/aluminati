@@ -77,7 +77,7 @@ const AlumniSideBar = ({ open, setOpen }) => {
       ),
     },
     {
-      href: ["/dashboard/explore"],
+      href: ["/dashboard/explore", "/dashboard/create-post"],
       name: "Explore",
       icon: (
         <svg

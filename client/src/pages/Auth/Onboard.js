@@ -107,7 +107,7 @@ export default function Onboard() {
 
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_BACKEND_URL}/alumni/update`,
+        `${process.env.REACT_APP_BACKEND_URL}/alumni/update-alumni`,
         dform,
         {
           headers: {
