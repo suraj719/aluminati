@@ -9,7 +9,10 @@ const {
   getAlumni,
   updateAlumni,
   getAlumniById,
-} = require("../controllers/alumniControllers/AlumniAuth");
+  getAllAlumni,
+  changePassword,
+  deleteAccount,
+} = require("../controllers/alumniControllers/Alumni");
 const {
   getEvents,
   createEvent,
@@ -34,6 +37,9 @@ router.post(
   ]),
   updateAlumni
 );
+router.get("/get-all-alumni", alumniMiddleware, getAllAlumni);
+router.post("/change-password", alumniMiddleware, changePassword);
+router.delete("/delete-account", alumniMiddleware, deleteAccount);
 
 router.get("/events", alumniMiddleware, getEvents);
 router.post(

@@ -35,7 +35,7 @@ export default function AlumniSignupPage() {
         dispatch(setAlumni(response.data.user));
         navigate("/signup/onboard");
       } else {
-        toast.error("Something went wrong!");
+        toast.error(response.data.message);
       }
     } catch (error) {
       setIsLoading(false);

@@ -199,10 +199,91 @@ const getAlumniById = async (req, res) => {
   }
 };
 
+const getAllAlumni = async (req, res) => {
+  try {
+    const alumni = await Alumni.find({}, { password: 0 });
+    res.status(200).json({
+      message: "All alumni retrieved successfully",
+      success: true,
+      data: alumni,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+      success: false,
+    });
+  }
+};
+
+const changePassword = async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+
+    const alumni = await Alumni.findOne({
+      _id: req.body.alumniID,
+    });
+
+    if (!alumni) {
+      return res.status(404).json({
+        message: "Alumni not found",
+        success: false,
+      });
+    }
+
+    const isMatch = await bcrypt.compare(currentPassword, alumni.password);
+    if (!isMatch) {
+      return res.status(400).json({
+        message: "Current password is incorrect",
+        success: false,
+      });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    alumni.password = await bcrypt.hash(newPassword, salt);
+    await alumni.save();
+
+    res.status(200).json({
+      message: "Password updated successfully",
+      success: true,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+      success: false,
+    });
+  }
+};
+
+const deleteAccount = async (req, res) => {
+  try {
+    const alumni = await Alumni.findOneAndDelete({
+      _id: req.body.alumniID,
+    });
+    if (!alumni) {
+      return res.status(404).json({
+        message: "Alumni not found",
+        success: false,
+      });
+    }
+    res.status(200).json({
+      message: "Account deleted successfully",
+      success: true,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+      success: false,
+    });
+  }
+};
+
 module.exports = {
   AlumniSignup,
   AlumniLogin,
   getAlumni,
   updateAlumni,
   getAlumniById,
+  getAllAlumni,
+  changePassword,
+  deleteAccount,
 };

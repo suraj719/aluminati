@@ -12,7 +12,6 @@ import Events from "./pages/Dashboard/Alumni/events/Events";
 import EventPage from "./pages/Dashboard/Alumni/events/EventPage";
 import StartupProfilePage from "./pages/incubation/StartupProfilePage";
 import Jobs from "./pages/Dashboard/Alumni/jobs/Jobs";
-import Batch from "./pages/Dashboard/Alumni/Batch";
 import News from "./pages/Dashboard/Alumni/News";
 import Connections from "./pages/Dashboard/Alumni/Connections";
 import Profile from "./pages/Dashboard/Alumni/Profile";
@@ -25,6 +24,8 @@ import ProtectedAlumniRoute from "./utils/ProtectedAlumniRoute";
 import JobPage from "./pages/Dashboard/Alumni/jobs/JobPage";
 import Posts from "./pages/Dashboard/Alumni/Explore/Posts";
 import CreatePost from "./pages/Dashboard/Alumni/Explore/CreatePost";
+import ErrorPage from "./pages/Home/ErrorPage";
+import Settings from "./pages/Dashboard/Alumni/Settings";
 
 function App() {
   const { loading } = useSelector((state) => state.alert);
@@ -109,14 +110,6 @@ function App() {
           }
         />
         <Route
-          path="/dashboard/batch"
-          element={
-            <AlumniLayout>
-              <Batch />
-            </AlumniLayout>
-          }
-        />
-        <Route
           path="/dashboard/news"
           element={
             <AlumniLayout>
@@ -133,6 +126,14 @@ function App() {
           }
         />
         <Route
+          path="/dashboard/settings"
+          element={
+            <AlumniLayout>
+              <Settings />
+            </AlumniLayout>
+          }
+        />
+        <Route
           path="/dashboard/profile/:userId"
           element={
             <AlumniLayout>
@@ -140,8 +141,8 @@ function App() {
             </AlumniLayout>
           }
         />
-
         <Route path="/incubation" element={<StartupProfilePage />} />
+        <Route path="*" element={<ErrorPage />} />
       </Routes>
       <ToastContainer
         position="top-right"
@@ -149,8 +150,6 @@ function App() {
         theme="dark"
         draggable
       />
-      {/* </>
-      )} */}
     </div>
   );
 }

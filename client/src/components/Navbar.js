@@ -123,7 +123,7 @@ export default function Navbar() {
                     <img
                       alt=""
                       src={alumni?.profilePicture || "/images/defppic.jpg"}
-                      className="h-8 w-8 rounded-full"
+                      className="h-8 w-8 rounded-full object-cover"
                     />
                   </MenuButton>
                 </div>

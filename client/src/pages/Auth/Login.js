@@ -41,7 +41,7 @@ export default function AlumniLoginPage() {
         Cookies.remove("token");
         navigate("/login");
         dispatch(setAlumni(null));
-        toast.error("something went wrong!");
+        toast.error(response.data.message);
       }
     } catch (error) {
       setIsLoading(false);

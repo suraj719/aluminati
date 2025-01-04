@@ -69,7 +69,7 @@ const Posts = () => {
                 user={post.user}
                 content={post.content}
                 image={post.image}
-                timestamp={post.timestamp}
+                timestamp={post.createdAt}
                 likes={post.likes}
                 comments={post.comments}
               />
@@ -103,7 +103,7 @@ const Post = ({ user, content, image, timestamp, likes, comments }) => {
               <img
                 src={user.profilePicture || "/images/defppic.jpg"}
                 alt={`${user.name}'s profile`}
-                className="w-12 h-12 rounded-full mr-4"
+                className="w-12 h-12 rounded-full mr-4 object-cover"
               />
               <div>
                 <h3 className="text-lg font-semibold">{user.name}</h3>

@@ -164,7 +164,7 @@ export default function Profile() {
       {profile ? (
         <>
           <div className="space-y-6 p-6 bg-gray-800 rounded-lg">
-            <div className="">
+            <form onSubmit={handleSubmit} className="">
               <div className="mb-6">
                 <label
                   className="block uppercase text-xs font-bold mb-2"
@@ -291,6 +291,7 @@ export default function Profile() {
                       type="number"
                       name="graduationYear"
                       value={profile.graduationYear}
+                      required
                       onChange={handleChange}
                       placeholder="Graduation Year"
                     />
@@ -309,6 +310,7 @@ export default function Profile() {
                     <input
                       className="appearance-none block w-full bg-gray-700 text-white border border-gray-600 rounded py-3 px-4 mb-3 focus:outline-none focus:border-indigo-500"
                       id="degree"
+                      required
                       type="text"
                       name="degree"
                       value={profile.degree}
@@ -332,6 +334,7 @@ export default function Profile() {
                     <input
                       className="appearance-none block w-full bg-gray-700 text-white border border-gray-600 rounded py-3 px-4 mb-3 focus:outline-none focus:border-indigo-500"
                       id="major"
+                      required
                       type="text"
                       name="major"
                       value={profile.major}
@@ -617,41 +620,60 @@ export default function Profile() {
                   </button>
                 )}
               </div>
-            </div>
-            <div className="justify-self-end">
-              <div className="flex space-x-4">
-                {isCurrentUser && (
+              <div className="justify-self-end">
+                <div className="flex space-x-4">
+                  {isCurrentUser &&
+                    // <button
+                    //   onClick={isEditing ? handleSubmit : toggleEdit}
+                    //   className={`px-6 py-3 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 ${
+                    //     isLoading
+                    //       ? "opacity-50 cursor-not-allowed"
+                    //       : "hover:bg-blue-700"
+                    //   } `}
+                    //   disabled={isLoading}
+                    // >
+                    //   {isEditing ? "Save" : "Edit"} Profile
+                    // </button>
+                    (isEditing ? (
+                      <>
+                        <button
+                          type="submit"
+                          className={`px-6 py-3 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 ${
+                            isLoading
+                              ? "opacity-50 cursor-not-allowed"
+                              : "hover:bg-blue-700"
+                          } `}
+                          disabled={isLoading}
+                        >
+                          Save Profile
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <p
+                          onClick={toggleEdit}
+                          className={`px-6 py-3 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 cursor-pointer ${
+                            isLoading
+                              ? "opacity-50 cursor-not-allowed"
+                              : "hover:bg-blue-700"
+                          } `}
+                        >
+                          Edit Profile
+                        </p>
+                      </>
+                    ))}
                   <button
-                    onClick={isEditing ? handleSubmit : toggleEdit}
-                    className={`px-6 py-3 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 ${
-                      isLoading
-                        ? "opacity-50 cursor-not-allowed"
-                        : "hover:bg-blue-700"
-                    } `}
-                    disabled={isLoading}
+                    onClick={() => {
+                      navigator.clipboard.writeText(window.location.href);
+                      toast.success("Link Copied to Clipboard!");
+                    }}
+                    className="px-6 py-3 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700"
                   >
-                    {isEditing ? "Save" : "Edit"} Profile
+                    Share Profile
                   </button>
-                )}
-                <button
-                  onClick={() => {
-                    navigator.clipboard.writeText(window.location.href);
-                    toast.success("Link Copied to Clipboard!");
-                  }}
-                  className="px-6 py-3 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700"
-                >
-                  Share Profile
-                </button>
-                {isCurrentUser && (
-                  <button
-                    // onClick={deleteProfile}
-                    className="px-6 py-3 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700"
-                  >
-                    Delete Profile
-                  </button>
-                )}
+                </div>
               </div>
-            </div>
+            </form>
           </div>
         </>
       ) : (
