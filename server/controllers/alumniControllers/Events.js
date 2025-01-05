@@ -37,12 +37,14 @@ const getEventById = async (req, res) => {
 };
 
 const createEvent = async (req, res) => {
-  const { id, title, description, date, location } = req.body;
+  const { title, description, date, location } = req.body;
   const file = req.file;
+  let imgUrl = null;
   try {
-    const imgUrl = await uploadToS3(file);
+    if (file) {
+      imgUrl = await uploadToS3(file);
+    }
     const newEvent = new Event({
-      id,
       title,
       description,
       date,

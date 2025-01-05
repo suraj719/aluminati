@@ -81,7 +81,7 @@ const EventCard = ({ event }) => {
   return (
     <div className="bg-gray-800 rounded-lg shadow-lg p-6 space-y-4 hover:bg-gray-700 h-[23rem]">
       <img
-        src={event.image}
+        src={event?.image || "/images/defeventpic.jpg"}
         alt={event.title}
         className="rounded-lg w-full h-40 object-cover"
       />

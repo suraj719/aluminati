@@ -106,7 +106,7 @@ const Post = ({ user, content, image, timestamp, likes, comments }) => {
                 className="w-12 h-12 rounded-full mr-4 object-cover"
               />
               <div>
-                <h3 className="text-lg font-semibold">{user.name}</h3>
+                <h3 className="text-lg font-semibold hover:underline">{user.name}</h3>
                 <p className="text-gray-400 text-sm">{user.headline}</p>
                 <p className="text-gray-500 text-xs">
                   {moment(timestamp).fromNow()}

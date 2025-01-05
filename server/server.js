@@ -3,6 +3,7 @@ const cors = require("cors");
 const connectDB = require("./Connection");
 const alumniRoutes = require("./routes/alumniRoutes");
 const startupRoutes = require("./routes/startupRoutes");
+const collegeRoutes = require("./routes/collegeRoutes");
 const app = express();
 const port = process.env.PORT || 5000;
 app.use(cors());
@@ -12,8 +13,10 @@ require("dotenv").config();
 app.get("/", (req, res) => {
   res.send("Hello World!!");
 });
+
 app.use("/api/alumni", alumniRoutes);
 app.use("/api/startup", startupRoutes);
+app.use("/api/college", collegeRoutes);
 
 const start = async () => {
   try {

@@ -1,36 +1,68 @@
-import React from "react";
-
-const newsItems = [
-  {
-    title: "Alumni Meet 2023",
-    date: "March 15, 2023",
-    description: "Join us for the annual alumni meet and reconnect with your batchmates."
-  },
-  {
-    title: "College Fest 2023",
-    date: "April 10, 2023",
-    description: "Don't miss the college fest with exciting events, competitions, and performances."
-  },
-  {
-    title: "New Research Lab Inauguration",
-    date: "May 5, 2023",
-    description: "Our new state-of-the-art research lab is now open for students and faculty."
-  }
-];
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { HideLoading, ShowLoading } from "../../../redux/alerts";
 
 export default function News() {
+  const [newsItems, setNewsItems] = useState(null);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const fetchNews = async () => {
+      try {
+        dispatch(ShowLoading());
+        const response = await axios.get(
+          `${process.env.REACT_APP_BACKEND_URL}/college/news`,
+          {
+            headers: {
+              Authorization: `Bearer ${
+                document.cookie
+                  .split("; ")
+                  .find((row) => row.startsWith("token="))
+                  ?.split("=")[1]
+              }`,
+            },
+          }
+        );
+        if (response.data.success) {
+          setNewsItems(
+            response.data.news.sort(
+              (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+            )
+          );
+        } else {
+          // toast.error("Failed to fetch news.");
+        }
+        dispatch(HideLoading());
+      } catch (error) {
+        console.error("Error fetching news:", error);
+        toast.error("Something went wrong! Please try reloading the page.");
+      } finally {
+        dispatch(HideLoading());
+      }
+    };
+
+    fetchNews();
+  }, []);
+
   return (
-    <div className="p-8 pt-0 bg-gray-900 text-white min-h-screen">
+    <div className="p-8 pt-0 bg-gray-900 text-white max-h-screen">
       <h1 className="text-3xl font-bold mb-6">News</h1>
-      <div className="space-y-6">
-        {newsItems.map((item, index) => (
-          <div key={index} className="p-6 bg-gray-800 rounded-lg shadow-md">
-            <h2 className="text-2xl font-semibold mb-2">{item.title}</h2>
-            <p className="text-gray-400 mb-4">{item.date}</p>
-            <p>{item.description}</p>
-          </div>
-        ))}
-      </div>
+      {newsItems?.length > 0 ? (
+        <div className="space-y-6">
+          {newsItems?.map((item, index) => (
+            <div key={index} className="p-6 bg-gray-800 rounded-lg shadow-md">
+              <h2 className="text-2xl font-semibold mb-2">{item.headline}</h2>
+              <p className="text-gray-400 mb-4">
+                {new Date(item.createdAt).toLocaleDateString()}
+              </p>
+              <p>{item.content}</p>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p>No news available.</p>
+      )}
     </div>
   );
 }

@@ -26,6 +26,8 @@ import Posts from "./pages/Dashboard/Alumni/Explore/Posts";
 import CreatePost from "./pages/Dashboard/Alumni/Explore/CreatePost";
 import ErrorPage from "./pages/Home/ErrorPage";
 import Settings from "./pages/Dashboard/Alumni/Settings";
+import CollegeLogin from "./pages/Dashboard/College/Login";
+import AdminDashboard from "./pages/Dashboard/College/AdminDashboard";
 
 function App() {
   const { loading } = useSelector((state) => state.alert);
@@ -141,6 +143,8 @@ function App() {
             </AlumniLayout>
           }
         />
+        <Route path="/college" element={<CollegeLogin />} />
+        <Route path="/college/dashboard" element={<AdminDashboard />} />
         <Route path="/incubation" element={<StartupProfilePage />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>

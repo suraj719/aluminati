@@ -663,6 +663,7 @@ export default function Profile() {
                       </>
                     ))}
                   <button
+                    type="button"
                     onClick={() => {
                       navigator.clipboard.writeText(window.location.href);
                       toast.success("Link Copied to Clipboard!");
