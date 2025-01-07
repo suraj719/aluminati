@@ -34,14 +34,28 @@ const getJobById = async (req, res) => {
 };
 
 const createJob = async (req, res) => {
-  const { title, description, company, location, salary } = req.body;
-
-  const newJob = new Job({
+  const {
     title,
     description,
-    company,
     location,
     salary,
+    companyName,
+    companyLogo,
+    companyId,
+    deadline,
+  } = req.body;
+
+  const newJob = new Job({
+    company: {
+      name: companyName,
+      id: companyId,
+      logo: companyLogo,
+    },
+    title,
+    description,
+    location,
+    salary,
+    deadline,
   });
 
   try {

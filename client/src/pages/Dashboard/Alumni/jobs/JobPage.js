@@ -81,7 +81,16 @@ export default function JobPage() {
                   <UserPlusIcon className="h-5 w-5" />
                   Apply
                 </button>
-                <button className="flex items-center gap-2 bg-green-700 text-white px-3 py-2 rounded-lg shadow-md hover:bg-green-600 transition duration-200">
+                <button
+                  onClick={() => {
+                    navigator.share({
+                      title: job.title,
+                      text: "Check out this job",
+                      url: window.location.href,
+                    });
+                  }}
+                  className="flex items-center gap-2 bg-green-700 text-white px-3 py-2 rounded-lg shadow-md hover:bg-green-600 transition duration-200"
+                >
                   <ShareIcon className="h-5 w-5" />
                   Share
                 </button>
@@ -99,12 +108,15 @@ export default function JobPage() {
             </div>
 
             <p className="text-gray-400">
-              {job.salary ? `$${job.salary} per year` : "Salary not disclosed"}{" "}
-              - {job.location}
+              {job.salary ? `${job.salary} per year` : "Salary not disclosed"} -{" "}
+              {job.location}
             </p>
             <p className="leading-relaxed text-lg">{job.description}</p>
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-gray-400">
               Posted on: {new Date(job.createdAt).toLocaleDateString()}
+            </p>
+            <p className="text-sm text-gray-400">
+              Deadline: {new Date(job?.deadline).toLocaleDateString()}
             </p>
           </div>
         </div>

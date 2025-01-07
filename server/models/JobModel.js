@@ -11,7 +11,7 @@ const jobSchema = new mongoose.Schema(
       required: true,
     },
     salary: {
-      type: Number,
+      type: String,
       required: true,
     },
     location: {
@@ -19,12 +19,13 @@ const jobSchema = new mongoose.Schema(
       required: true,
     },
     company: {
-      type: String,
-      required: true,
+      name: { type: String, trim: true },
+      id: { type: String, trim: true },
+      logo: { type: String, trim: true },
     },
-    createdAt: {
+    deadline: {
       type: Date,
-      default: Date.now,
+      required: true,
     },
   },
   { timestamps: true }

@@ -97,7 +97,16 @@ export default function EventDetails() {
                   <UserPlusIcon className="h-5 w-5" />
                   Register
                 </button>
-                <button className="flex items-center gap-2 bg-green-700 text-white px-3 py-2 rounded-lg shadow-md hover:bg-green-600 transition duration-200">
+                <button
+                  onClick={() =>
+                    navigator.share({
+                      title: event.title,
+                      text: event.description,
+                      url: window.location.href,
+                    })
+                  }
+                  className="flex items-center gap-2 bg-green-700 text-white px-3 py-2 rounded-lg shadow-md hover:bg-green-600 transition duration-200"
+                >
                   <ShareIcon className="h-5 w-5" />
                   Share
                 </button>

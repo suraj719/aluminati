@@ -28,6 +28,11 @@ import ErrorPage from "./pages/Home/ErrorPage";
 import Settings from "./pages/Dashboard/Alumni/Settings";
 import CollegeLogin from "./pages/Dashboard/College/Login";
 import AdminDashboard from "./pages/Dashboard/College/AdminDashboard";
+import StartupDashboard from "./pages/Dashboard/Startup/StartupDashboard";
+import StartupLoginPage from "./pages/Dashboard/Startup/Login";
+import StartupSignupPage from "./pages/Dashboard/Startup/Signup";
+import StartupOnboard from "./pages/Dashboard/Startup/StartupOnboard";
+import ProtectedStartupRoute from "./utils/ProtectedStartupRoute";
 
 function App() {
   const { loading } = useSelector((state) => state.alert);
@@ -143,8 +148,29 @@ function App() {
             </AlumniLayout>
           }
         />
+
         <Route path="/college" element={<CollegeLogin />} />
         <Route path="/college/dashboard" element={<AdminDashboard />} />
+
+        <Route path="/startup/login" element={<StartupLoginPage />} />
+        <Route path="/startup/signup" element={<StartupSignupPage />} />
+        <Route
+          path="/startup/onboard"
+          element={
+            <ProtectedStartupRoute>
+              <StartupOnboard />
+            </ProtectedStartupRoute>
+          }
+        />
+        <Route
+          path="/startup/dashboard"
+          element={
+            <ProtectedStartupRoute>
+              <StartupDashboard />
+            </ProtectedStartupRoute>
+          }
+        />
+
         <Route path="/incubation" element={<StartupProfilePage />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>

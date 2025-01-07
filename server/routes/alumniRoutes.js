@@ -12,7 +12,7 @@ const {
   getAllAlumni,
   changePassword,
   deleteAccount,
-} = require("../controllers/alumniControllers/Alumni");
+} = require("../controllers/alumniControllers/Auth");
 const {
   getEvents,
   createEvent,
