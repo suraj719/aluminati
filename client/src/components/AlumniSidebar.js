@@ -101,7 +101,7 @@ const AlumniSideBar = ({ open, setOpen }) => {
       ),
     },
     {
-      href: ["javascript:void(0)"],
+      href: ["/dashboard/nearby"],
       name: "Nearby",
       icon: (
         <svg

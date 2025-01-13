@@ -16,9 +16,6 @@ import News from "./pages/Dashboard/Alumni/News";
 import Connections from "./pages/Dashboard/Alumni/Connections";
 import Profile from "./pages/Dashboard/Alumni/Profile";
 import Loader from "./components/Loader";
-
-import "react-toastify/dist/ReactToastify.css";
-import "./App.css";
 import CreateEvent from "./pages/Dashboard/Alumni/events/CreateEvent";
 import ProtectedAlumniRoute from "./utils/ProtectedAlumniRoute";
 import JobPage from "./pages/Dashboard/Alumni/jobs/JobPage";
@@ -33,6 +30,9 @@ import StartupLoginPage from "./pages/Dashboard/Startup/Login";
 import StartupSignupPage from "./pages/Dashboard/Startup/Signup";
 import StartupOnboard from "./pages/Dashboard/Startup/StartupOnboard";
 import ProtectedStartupRoute from "./utils/ProtectedStartupRoute";
+import Nearby from "./pages/Dashboard/Alumni/Nearby/Nearby";
+import "react-toastify/dist/ReactToastify.css";
+import "./App.css";
 
 function App() {
   const { loading } = useSelector((state) => state.alert);
@@ -113,6 +113,14 @@ function App() {
           element={
             <AlumniLayout>
               <CreatePost />
+            </AlumniLayout>
+          }
+        />
+        <Route
+          path="/dashboard/nearby"
+          element={
+            <AlumniLayout>
+              <Nearby />
             </AlumniLayout>
           }
         />

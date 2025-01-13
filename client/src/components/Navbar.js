@@ -135,20 +135,14 @@ export default function Navbar() {
                     >
                       Your Profile
                     </Link>
-                    {/* <a
-                    href="#"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  >
-                    Your Profile
-                  </a> */}
                   </MenuItem>
                   <MenuItem>
-                    <a
-                      href="#"
+                    <Link
+                      to={`/dashboard/settings`}
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     >
                       Settings
-                    </a>
+                    </Link>
                   </MenuItem>
                   <MenuItem>
                     <button
