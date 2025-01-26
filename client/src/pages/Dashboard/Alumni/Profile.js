@@ -4,6 +4,8 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { ShowLoading, HideLoading } from "../../../redux/alerts";
+import { CometChat } from "@cometchat/chat-sdk-javascript";
+import { CometChatUIKit } from "@cometchat/chat-uikit-react";
 
 export default function Profile() {
   const dispatch = useDispatch();
@@ -117,6 +119,29 @@ export default function Profile() {
       if (response.data.success) {
         toast.success(response.data.message);
         setProfile(response.data.data);
+        var user = new CometChat.User(response.data.data._id);
+        const name =
+          response.data.data?.firstName + " " + response.data.data?.lastName;
+        user.setName(name);
+        if (response.data.data?.profilePicture) {
+          user.setAvatar(response.data.data?.profilePicture);
+        }
+        await CometChat.updateUser(
+          user,
+          process.env.REACT_APP_COMET_AUTH_KEY
+        ).then(
+          (user) => {
+            console.log("user updated", user);
+          },
+          (error) => {
+            console.log("error", error);
+          }
+        );
+        CometChatUIKit.login(response.data.data._id);
+        CometChat.login(
+          response.data.data._id,
+          process.env.REACT_APP_COMET_AUTH_KEY
+        );
       } else {
         toast.error("Something went wrong!");
       }

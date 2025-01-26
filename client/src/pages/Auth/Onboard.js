@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
+import { CometChat } from "@cometchat/chat-sdk-javascript";
+import { CometChatUIKit } from "@cometchat/chat-uikit-react";
 
 export default function Onboard() {
   const navigate = useNavigate();
@@ -126,6 +128,29 @@ export default function Onboard() {
 
       if (response.data.success) {
         toast.success(response.data.message);
+        var user = new CometChat.User(response.data.data._id);
+        const name =
+          response.data.data?.firstName + " " + response.data.data?.lastName;
+        user.setName(name);
+        if (response.data.data?.profilePicture) {
+          user.setAvatar(response.data.data?.profilePicture);
+        }
+        await CometChat.updateUser(
+          user,
+          process.env.REACT_APP_COMET_AUTH_KEY
+        ).then(
+          (user) => {
+            console.log("user updated", user);
+          },
+          (error) => {
+            console.log("error", error);
+          }
+        );
+        CometChatUIKit.login(response.data.data._id);
+        CometChat.login(
+          response.data.data._id,
+          process.env.REACT_APP_COMET_AUTH_KEY
+        );
         navigate("/dashboard");
       } else {
         toast.error("Something went wrong!");
@@ -223,6 +248,7 @@ export default function Onboard() {
                 className="appearance-none block w-full bg-gray-700 text-white border border-gray-600 rounded py-3 px-4 mb-3 focus:outline-none focus:border-indigo-500"
                 id="lastName"
                 type="text"
+                required
                 value={formData.lastName}
                 onChange={handleChange}
                 placeholder="Last Name"
@@ -241,6 +267,7 @@ export default function Onboard() {
               <input
                 className="appearance-none block w-full bg-gray-700 text-white border border-gray-600 rounded py-3 px-4 mb-3 focus:outline-none focus:border-indigo-500"
                 id="email"
+                required
                 type="email"
                 autoComplete="email"
                 value={formData.email}
@@ -259,6 +286,7 @@ export default function Onboard() {
                 className="appearance-none block w-full bg-gray-700 text-white border border-gray-600 rounded py-3 px-4 mb-3 focus:outline-none focus:border-indigo-500"
                 id="phoneNumber"
                 type="tel"
+                required
                 value={formData.phoneNumber}
                 onChange={handleChange}
                 placeholder="Phone Number"

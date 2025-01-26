@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { setAlumni } from "../redux/alumni.js";
 import axios from "axios";
 import { HideLoading, ShowLoading } from "../redux/alerts.js";
+import { CometChat } from "@cometchat/chat-sdk-javascript";
 
 export default function ProtectedAlumniRoute({ children }) {
   const navigate = useNavigate();
@@ -30,6 +31,11 @@ export default function ProtectedAlumniRoute({ children }) {
         setReadyToRednder(true);
         if (resposne.data.user.onboardingStatus === false) {
           navigate("/signup/onboard");
+        } else {
+          CometChat.login(
+            resposne?.data.user._id,
+            process.env.REACT_APP_COMET_AUTH_KEY
+          );
         }
       } else {
         Cookies.remove("token");

@@ -5,6 +5,8 @@ import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { setAlumni } from "../../redux/alumni";
 import Cookies from "js-cookie";
+import { CometChat } from "@cometchat/chat-sdk-javascript";
+import { CometChatUIKit } from "@cometchat/chat-uikit-react";
 
 export default function AlumniSignupPage() {
   const navigate = useNavigate();
@@ -32,6 +34,25 @@ export default function AlumniSignupPage() {
       if (response.data.success) {
         Cookies.set("token", response.data.data, { expires: 1 });
         toast.success(response.data.message);
+        var user = new CometChat.User(response.data.user._id);
+        user.setName(formData.name);
+        user.setAvatar("https://aluminati.vercel.app/images/defppic.jpg");
+        await CometChat.createUser(
+          user,
+          process.env.REACT_APP_COMET_AUTH_KEY
+        ).then(
+          (user) => {
+            console.log("user created", user);
+          },
+          (error) => {
+            console.log("error", error);
+          }
+        );
+        CometChatUIKit.login(response.data.user._id);
+        CometChat.login(
+          response.data.user._id,
+          process.env.REACT_APP_COMET_AUTH_KEY
+        );
         dispatch(setAlumni(response.data.user));
         navigate("/signup/onboard");
       } else {

@@ -5,7 +5,8 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { setAlumni } from "../../redux/alumni";
-
+import { CometChat } from "@cometchat/chat-sdk-javascript";
+import { CometChatUIKit } from "@cometchat/chat-uikit-react";
 export default function AlumniLoginPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -30,6 +31,11 @@ export default function AlumniLoginPage() {
       setIsLoading(false);
       if (response.data.success) {
         Cookies.set("token", response.data.data, { expires: 1 });
+        await CometChatUIKit.login(response.data.user._id);
+        await CometChat.login(
+          response.data.user._id,
+          process.env.REACT_APP_COMET_AUTH_KEY
+        );
         dispatch(setAlumni(response.data.user));
         if (response.data.user.onboardingStatus === false) {
           navigate("/signup/onboard");
@@ -40,6 +46,7 @@ export default function AlumniLoginPage() {
       } else {
         Cookies.remove("token");
         navigate("/login");
+        CometChat.logout();
         dispatch(setAlumni(null));
         toast.error(response.data.message);
       }
