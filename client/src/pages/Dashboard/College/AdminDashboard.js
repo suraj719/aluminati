@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import CreateEvent from "./createEvent";
+import CreateEvent from "./CollegecreateEvent";
 import CreateNews from "./createNews";
 import Cookies from "js-cookie";
+import Events from "./CollegeEvents";
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState("news");
@@ -55,7 +56,7 @@ const AdminDashboard = () => {
         {/* Main Content */}
         <main className="flex-grow h-full p-6 bg-gray-900">
           {activeTab === "news" && <CreateNews />}
-          {activeTab === "events" && <CreateEvent />}
+          {activeTab === "events" && <Events />}
           {activeTab === "settings" && <AdminSettings />}
         </main>
       </div>

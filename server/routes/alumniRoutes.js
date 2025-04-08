@@ -17,6 +17,7 @@ const {
   getEvents,
   createEvent,
   getEventById,
+  registerForEvent,
 } = require("../controllers/alumniControllers/Events");
 const alumniMiddleware = require("../middlewares/alumniMiddleware");
 const {
@@ -49,6 +50,7 @@ router.post(
   createEvent
 );
 router.get("/event/:id", alumniMiddleware, getEventById);
+router.post("/event/register", alumniMiddleware, registerForEvent);
 
 router.get("/posts", alumniMiddleware, getPosts);
 router.post(

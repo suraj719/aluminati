@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { HideLoading, ShowLoading } from "../../../../redux/alerts";
+import { HideLoading, ShowLoading } from "../../../redux/alerts";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import axios from "axios";
+import SideBar from "./SideBar";
 
 export default function Events() {
   const dispatch = useDispatch();
@@ -12,13 +13,13 @@ export default function Events() {
     try {
       dispatch(ShowLoading());
       const response = await axios.get(
-        `${process.env.REACT_APP_BACKEND_URL}/alumni/events`,
+        `${process.env.REACT_APP_BACKEND_URL}/college/events`,
         {
           headers: {
             Authorization: `Bearer ${
               document.cookie
                 .split("; ")
-                .find((row) => row.startsWith("token="))
+                .find((row) => row.startsWith("admin-token="))
                 ?.split("=")[1]
             }`,
           },
@@ -44,23 +45,30 @@ export default function Events() {
   }, []);
 
   return (
-    <div className=" bg-gray-900 text-gray-200 p-8 pt-0">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold">Upcoming Events</h1>
-        {/* <Link
-          to="/dashboard/create-event"
-          className="bg-blue-500 text-white h-full px-4 py-2 rounded-lg hover:bg-blue-600"
-        >
-          Create Event
-        </Link> */}
+    <div className="flex w-full">
+      <div>
+        <SideBar />
       </div>
-      <ul className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-        {events?.map((event) => (
-          <li key={"event" + event.id}>
-            <EventCard event={event} />
-          </li>
-        ))}
-      </ul>
+      <div className="w-full m-4">
+        <div className=" bg-gray-900 text-gray-200 p-8 pt-0">
+          <div className="flex justify-between items-center mb-8">
+            <h1 className="text-3xl font-bold">Upcoming Events</h1>
+            <Link
+              to="/college/create-event"
+              className="bg-blue-500 text-white h-full px-4 py-2 rounded-lg hover:bg-blue-600"
+            >
+              Create Event
+            </Link>
+          </div>
+          <ul className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {events?.map((event) => (
+              <li key={"event" + event.id}>
+                <EventCard event={event} />
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
     </div>
   );
 }
@@ -91,7 +99,7 @@ const EventCard = ({ event }) => {
           {formatDate(event.date)} - {event.location}
         </p>
         <p className="line-clamp-2">{event.description}</p>
-        <Link to={`/dashboard/event/${event._id}`}>
+        <Link to={`/college/event/${event._id}`}>
           <p className="text-blue-500 hover:underline">View more details..</p>
         </Link>
       </div>

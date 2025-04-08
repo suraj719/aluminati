@@ -1,4 +1,5 @@
 const Event = require("../../models/EventModel");
+const Alumni = require("../../models/AlumniModel");
 const uploadToS3 = require("../../util/AWSUpload");
 
 const getEvents = async (req, res) => {
@@ -61,8 +62,55 @@ const createEvent = async (req, res) => {
   }
 };
 
+const registerForEvent = async (req, res) => {
+  const { eventId, alumniId } = req.body;
+
+  try {
+    // Check if event exists
+    const event = await Event.findById(eventId);
+    if (!event) {
+      return res
+        .status(404)
+        .json({ message: "Event not found", success: false });
+    }
+
+    // Check if alumni exists
+    const alumni = await Alumni.findById(alumniId);
+    if (!alumni) {
+      return res
+        .status(404)
+        .json({ message: "Alumni not found", success: false });
+    }
+
+    // Check if already registered
+    const alreadyRegistered = event.registeredAlumni.includes(alumniId);
+    if (alreadyRegistered) {
+      return res
+        .status(400)
+        .json({ message: "Already registered", success: false });
+    }
+    alumni.password = undefined; // Remove password from alumni object
+    // Register alumni
+    event.registeredAlumni.push(alumni);
+    await event.save();
+
+    res.status(200).json({
+      message: "Registration successful",
+      success: true,
+      eventId: event._id,
+      alumniId: alumni._id,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message || "Something went wrong!",
+      success: false,
+    });
+  }
+};
+
 module.exports = {
   getEvents,
   getEventById,
   createEvent,
+  registerForEvent,
 };

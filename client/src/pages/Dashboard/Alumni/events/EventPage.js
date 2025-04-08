@@ -7,12 +7,15 @@ import {
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ShowLoading, HideLoading } from "../../../../redux/alerts";
 
 export default function EventDetails() {
   const { eventId } = useParams();
   const [event, setEvent] = useState(null);
+  const { alumni } = useSelector((state) => state.alumni);
+  const [isRegistered, setIsRegistered] = useState(false);
+
   const dispatch = useDispatch();
   const fetchData = async () => {
     try {
@@ -31,6 +34,10 @@ export default function EventDetails() {
         }
       );
       if (response.data.success) {
+        const isAlreadyRegistered = response.data.event.registeredAlumni?.some(
+          (alumnivar) => alumnivar._id === alumni._id
+        );
+        setIsRegistered(isAlreadyRegistered);
         setEvent(response.data.event);
       } else {
         // toast.error("Something went wrong!");
@@ -45,6 +52,7 @@ export default function EventDetails() {
   useEffect(() => {
     fetchData();
   }, []);
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return new Intl.DateTimeFormat("en-US", {
@@ -55,6 +63,35 @@ export default function EventDetails() {
       minute: "numeric",
       hour12: true,
     }).format(date);
+  };
+
+  const handleRegister = async () => {
+    try {
+      dispatch(ShowLoading());
+      const response = await axios.post(
+        `${process.env.REACT_APP_BACKEND_URL}/alumni/event/register`,
+        { eventId: event._id, alumniId: alumni._id },
+        {
+          headers: {
+            Authorization: `Bearer ${
+              document.cookie
+                .split("; ")
+                .find((row) => row.startsWith("token="))
+                ?.split("=")[1]
+            }`,
+          },
+        }
+      );
+      if (response.data.success) {
+        toast.success("Registered successfully!");
+        setIsRegistered(true);
+      } else {
+        toast.error(response.data.message || "Registration failed.");
+      }
+    } catch (err) {
+      toast.error("Something went wrong during registration.");
+    }
+    dispatch(HideLoading());
   };
 
   if (!event) {
@@ -93,10 +130,21 @@ export default function EventDetails() {
             <div className="flex justify-between items-start">
               <h1 className="text-4xl font-bold">{event.title}</h1>
               <div className="flex gap-4">
-                <button className="flex items-center gap-2 bg-blue-700 text-white px-3 py-2 rounded-lg shadow-md hover:bg-blue-600 transition duration-200">
-                  <UserPlusIcon className="h-5 w-5" />
-                  Register
-                </button>
+                {!isRegistered ? (
+                  <button
+                    onClick={handleRegister}
+                    className="flex items-center gap-2 bg-blue-700 text-white px-3 py-2 rounded-lg shadow-md hover:bg-blue-600 transition duration-200"
+                  >
+                    <UserPlusIcon className="h-5 w-5" />
+                    Register
+                  </button>
+                ) : (
+                  <div className="flex items-center gap-2 bg-green-700 text-white px-3 py-2 rounded-lg shadow-md cursor-default">
+                    <UserPlusIcon className="h-5 w-5" />
+                    Registered
+                  </div>
+                )}
+
                 <button
                   onClick={() =>
                     navigator.share({

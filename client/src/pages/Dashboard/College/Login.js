@@ -24,7 +24,7 @@ export default function CollegeLogin() {
         formData.password === "admin"
       ) {
         Cookies.set("admin-token", "admin", { expires: 10 / (24 * 60) });
-        navigate("/college/dashboard");
+        navigate("/college/news");
         toast.success("Logged in successfully!");
       } else {
         Cookies.remove("admin-token");
@@ -39,7 +39,7 @@ export default function CollegeLogin() {
   useEffect(() => {
     const token = Cookies.get("admin-token");
     if (token) {
-      navigate("/college/dashboard");
+      navigate("/college/news");
     }
   }, []);
 

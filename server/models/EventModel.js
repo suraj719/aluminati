@@ -21,6 +21,11 @@ const eventSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+    registeredAlumni: [
+      {
+        type: mongoose.Schema.Types.Mixed,
+      },
+    ],
   },
   { timestamps: true }
 );

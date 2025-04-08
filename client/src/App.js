@@ -42,6 +42,11 @@ import "./styles/App.css";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 import { AppContextProvider } from "./context/AppContext";
+import CreateNews from "./pages/Dashboard/College/createNews";
+import CollegeSettings from "./pages/Dashboard/College/CollegeSettings";
+import CollegeEvents from "./pages/Dashboard/College/CollegeEvents";
+import CollegecreateEvent from "./pages/Dashboard/College/CollegecreateEvent";
+import CollegeEventPage from "./pages/Dashboard/College/CollegeEventPage";
 
 function App() {
   const { loading } = useSelector((state) => state.alert);
@@ -197,7 +202,12 @@ function App() {
           />
 
           <Route path="/college" element={<CollegeLogin />} />
-          <Route path="/college/dashboard" element={<AdminDashboard />} />
+          <Route path="/college/news" element={<CreateNews />} />
+          <Route path="/college/settings" element={<CollegeSettings />} />
+          <Route path="/college/events" element={<CollegeEvents />} />
+          <Route path="/college/create-event" element={<CollegecreateEvent />} />
+          <Route path="/college/event/:eventId" element={<CollegeEventPage />} />
+
 
           <Route path="/startup/login" element={<StartupLoginPage />} />
           <Route path="/startup/signup" element={<StartupSignupPage />} />
