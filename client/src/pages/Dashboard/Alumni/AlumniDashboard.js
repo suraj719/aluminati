@@ -3,123 +3,148 @@ import {
   UserGroupIcon,
   BriefcaseIcon,
   CalendarIcon,
-  ChatBubbleBottomCenterIcon,
   NewspaperIcon,
-  AcademicCapIcon,
+  MapIcon,
+  SparklesIcon,
 } from "@heroicons/react/24/outline";
+import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const AlumniDashboard = () => {
+  // Static alumni info
   const { alumni } = useSelector((state) => state.alumni);
+
+  // Quote of the day
+  const quote = {
+    text: "Education is not the filling of a pail, but the lighting of a fire.",
+    author: "W.B. Yeats",
+  };
+
+  // Links to other routes in the app
+  const quickLinks = [
+    {
+      name: "Events",
+      icon: CalendarIcon,
+      path: "/dashboard/events",
+      color: "bg-yellow-600",
+    },
+    {
+      name: "Jobs",
+      icon: BriefcaseIcon,
+      path: "/dashboard/jobs",
+      color: "bg-green-600",
+    },
+    {
+      name: "Explore",
+      icon: SparklesIcon,
+      path: "/dashboard/explore",
+      color: "bg-purple-600",
+    },
+    {
+      name: "Connect",
+      icon: UserGroupIcon,
+      path: "/dashboard/connect",
+      color: "bg-blue-600",
+    },
+    {
+      name: "News",
+      icon: NewspaperIcon,
+      path: "/dashboard/news",
+      color: "bg-pink-600",
+    },
+    {
+      name: "Nearby",
+      icon: MapIcon,
+      path: "/dashboard/nearby",
+      color: "bg-indigo-600",
+    },
+  ];
+
   return (
-    <div className="bg-gray-900 min-h-screen p-8 pt-0 text-white">
-      {/* Welcome Section */}
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold">Welcome back, {alumni?.firstName}!</h1>
-        <p className="text-gray-400 text-sm">
-          Stay connected and explore what's happening in the alumni community.
-        </p>
+    <div className="bg-gray-900 py-8 px-4 sm:px-6 lg:px-8 text-white">
+      {/* Hero Banner with Quote */}
+      <div className="mb-8 bg-gradient-to-r from-blue-800 to-indigo-900 rounded-xl shadow-lg overflow-hidden">
+        <div className="relative">
+          {/* Background pattern */}
+          <div className="absolute inset-0 opacity-10">
+            <svg
+              className="w-full h-full"
+              viewBox="0 0 100 100"
+              preserveAspectRatio="none"
+            >
+              <path
+                d="M0,0 L100,0 L100,100 L0,100 Z"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="0.5"
+              ></path>
+              <path
+                d="M0,0 L100,100 M100,0 L0,100"
+                stroke="currentColor"
+                strokeWidth="0.5"
+              ></path>
+            </svg>
+          </div>
+
+          <div className="relative p-8 md:p-12">
+            {/* User welcome */}
+            <div className="md:flex md:items-center md:justify-between">
+              <div className="flex items-center mb-6 md:mb-0">
+                <img
+                  src={alumni?.profilePicture || "/images/defppic.jpg"}
+                  alt="Profile"
+                  className="w-16 h-16 rounded-full border-4 border-blue-400 shadow-lg"
+                />
+                <div className="ml-4">
+                  <h1 className="text-3xl font-bold">
+                    Welcome, {alumni.firstName}!
+                  </h1>
+                  <p className="text-blue-200">It's good to have you back</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Inspirational quote */}
+            <div className="mt-8">
+              <blockquote className="italic text-xl text-blue-100">
+                "{quote.text}"
+              </blockquote>
+              <p className="mt-2 text-blue-300 text-right">— {quote.author}</p>
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* Dashboard Sections */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-        {/* Alumni Highlights */}
-        <div className="bg-gray-800 p-4 rounded-lg shadow-md">
-          <h2 className="text-xl font-bold mb-4">Alumni Highlights</h2>
-          <p className="text-sm mb-2">
-            <UserGroupIcon className="h-5 w-5 inline-block mr-2 text-blue-400" />
-            John Doe started a new position at ABC Corp.
-          </p>
-          <p className="text-sm mb-2">
-            <UserGroupIcon className="h-5 w-5 inline-block mr-2 text-blue-400" />
-            Jane Smith published a research paper on AI ethics.
-          </p>
-          <p className="text-sm">
-            <UserGroupIcon className="h-5 w-5 inline-block mr-2 text-blue-400" />
-            Michael Brown was awarded "Entrepreneur of the Year."
-          </p>
+      {/* Quick Links Section */}
+      <div className="mb-10">
+        <h2 className="text-2xl font-bold mb-6 flex items-center">
+          <SparklesIcon className="h-6 w-6 mr-2 text-blue-400" />
+          Quick Access
+        </h2>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
+          {quickLinks.map((link, index) => (
+            <Link
+              key={index}
+              to={link.path}
+              className="bg-gray-800 hover:bg-gray-700 rounded-lg p-6 text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+            >
+              <div
+                className={`${link.color} mx-auto w-12 h-12 rounded-full flex items-center justify-center mb-3`}
+              >
+                <link.icon className="h-6 w-6 text-white" />
+              </div>
+              <span className="font-medium">{link.name}</span>
+            </Link>
+          ))}
         </div>
+      </div>
 
-        {/* Upcoming Events */}
-        <div className="bg-gray-800 p-4 rounded-lg shadow-md">
-          <h2 className="text-xl font-bold mb-4">Upcoming Events</h2>
-          <p className="text-sm mb-2">
-            <CalendarIcon className="h-5 w-5 inline-block mr-2 text-yellow-400" />
-            Alumni Meetup - Nov 10, 2024
-          </p>
-          <p className="text-sm mb-2">
-            <CalendarIcon className="h-5 w-5 inline-block mr-2 text-yellow-400" />
-            Webinar on Career Development - Nov 15, 2024
-          </p>
-          <p className="text-sm">
-            <CalendarIcon className="h-5 w-5 inline-block mr-2 text-yellow-400" />
-            Annual Homecoming - Dec 5, 2024
-          </p>
-        </div>
-
-        {/* Job Opportunities */}
-        <div className="bg-gray-800 p-4 rounded-lg shadow-md">
-          <h2 className="text-xl font-bold mb-4">Job Opportunities</h2>
-          <p className="text-sm mb-2">
-            <BriefcaseIcon className="h-5 w-5 inline-block mr-2 text-green-400" />
-            Software Engineer at XYZ Solutions
-          </p>
-          <p className="text-sm mb-2">
-            <BriefcaseIcon className="h-5 w-5 inline-block mr-2 text-green-400" />
-            Marketing Manager at Creative Agency
-          </p>
-          <p className="text-sm">
-            <BriefcaseIcon className="h-5 w-5 inline-block mr-2 text-green-400" />
-            Data Analyst at FinTech Corp
-          </p>
-        </div>
-
-        {/* Recent Connections */}
-        <div className="bg-gray-800 p-4 rounded-lg shadow-md">
-          <h2 className="text-xl font-bold mb-4">Recent Connections</h2>
-          <p className="text-sm mb-2">
-            <ChatBubbleBottomCenterIcon className="h-5 w-5 inline-block mr-2 text-purple-400" />
-            You connected with Emily Davis.
-          </p>
-          <p className="text-sm mb-2">
-            <ChatBubbleBottomCenterIcon className="h-5 w-5 inline-block mr-2 text-purple-400" />
-            You received a message from Richard Lee.
-          </p>
-          <p className="text-sm">
-            <ChatBubbleBottomCenterIcon className="h-5 w-5 inline-block mr-2 text-purple-400" />
-            Mary Johnson liked your post.
-          </p>
-        </div>
-
-        {/* Institution News */}
-        <div className="bg-gray-800 p-4 rounded-lg shadow-md">
-          <h2 className="text-xl font-bold mb-4">Institution News</h2>
-          <p className="text-sm mb-2">
-            <NewspaperIcon className="h-5 w-5 inline-block mr-2 text-pink-400" />
-            University ranked among the top 10 for engineering.
-          </p>
-          <p className="text-sm mb-2">
-            <NewspaperIcon className="h-5 w-5 inline-block mr-2 text-pink-400" />
-            New campus facilities inaugurated.
-          </p>
-          <p className="text-sm">
-            <NewspaperIcon className="h-5 w-5 inline-block mr-2 text-pink-400" />
-            Alumni donations reached a record high this year.
-          </p>
-        </div>
-
-        {/* Mentorship Programs */}
-        <div className="bg-gray-800 p-4 rounded-lg shadow-md">
-          <h2 className="text-xl font-bold mb-4">Mentorship Programs</h2>
-          <p className="text-sm mb-2">
-            <AcademicCapIcon className="h-5 w-5 inline-block mr-2 text-blue-400" />
-            Apply to be a mentor for current students.
-          </p>
-          <p className="text-sm">
-            <AcademicCapIcon className="h-5 w-5 inline-block mr-2 text-blue-400" />
-            Find a mentor to guide your career path.
-          </p>
-        </div>
+      {/* Inspiration Footer */}
+      <div className="mt-10 text-center">
+        <p className="text-gray-400 italic">
+          "The roots of education are bitter, but the fruit is sweet." —
+          Aristotle
+        </p>
       </div>
     </div>
   );
