@@ -77,10 +77,10 @@ export default function JobPage() {
             <div className="flex justify-between items-start">
               <h1 className="text-4xl font-bold">{job.title}</h1>
               <div className="flex gap-4">
-                <button className="flex items-center gap-2 bg-blue-700 text-white px-3 py-2 rounded-lg shadow-md hover:bg-blue-600 transition duration-200">
+                {/* <button className="flex items-center gap-2 bg-blue-700 text-white px-3 py-2 rounded-lg shadow-md hover:bg-blue-600 transition duration-200">
                   <UserPlusIcon className="h-5 w-5" />
                   Apply
-                </button>
+                </button> */}
                 <button
                   onClick={() => {
                     navigator.share({
